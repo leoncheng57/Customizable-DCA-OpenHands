@@ -165,8 +165,10 @@ Maintainer checklist:
 
 - Bot-authored release PRs need workflow approval — approve the `action_required` runs
   (`gh api -X POST repos/<owner>/<repo>/actions/runs/<id>/approve`) or checks never start.
-- **One-time:** the first push creates a *private* GHCR package. Flip it to public in the
-  package settings, or every user needs `docker login ghcr.io`.
+- **GHCR visibility needs no action on a public repo.** A package pushed by Actions with
+  `GITHUB_TOKEN` inherits the repository's visibility, so the image is anonymously pullable from
+  the first build — verified against `v0.0.1` with an unauthenticated registry token. (On a
+  *private* repo the package is private too, and every user would need `docker login ghcr.io`.)
 - `workflow_dispatch` on `release.yml` re-publishes an existing tag (`tag: vX.Y.Z`) or, with an
   empty tag, builds an `:edge` image only — a safe dry run that never touches release assets.
 - Assets can be replaced in place (`gh release upload … --clobber`) for a broken installer, but
@@ -182,8 +184,10 @@ is not your dev stack's.
 ```bash
 # 1. install as a user would, into a temp dir
 export OPENHANDS_APP_DIR=/tmp/oh-e2e
-gh release download --repo <owner>/<repo> --pattern install.sh -O - | bash   # writes .env, exits 1
+curl -fsSL https://github.com/<owner>/<repo>/releases/download/vX.Y.Z/install.sh | bash  # writes .env, exits 1
 # 2. fill .env (key, projects dir, PORT=3020), re-run the same command
+#    NOTE: PORT is COMMENTED OUT in env.example — uncomment it, don't just sed the value,
+#    or the stack silently comes up on :3000 and may collide with your dev BFF.
 # 3. verify the stack
 curl -s localhost:3020/api/openhands/status        # configured:true + server.version
 curl -s localhost:3020/api/openhands/local-folders # your seeded project appears
@@ -203,7 +207,7 @@ applied to the package instead of the dev stack.
 | Symptom | Cause & fix |
 |---|---|
 | `curl: (56) … 404` on the installer or bundle | no release published yet → check the Releases page |
-| `denied` / `unauthorized` on `docker compose pull` | GHCR package is still private → `gh auth token \| docker login ghcr.io -u <user> --password-stdin`, or flip the package public |
+| `denied` / `unauthorized` on `docker compose pull` | only happens if the package is private (it is not, on a public repo) → `gh auth token \| docker login ghcr.io -u <user> --password-stdin` |
 | `/dev/tty: Device not configured` | no controlling terminal (CI, nested pipe) — the installer writes `.env` and exits; fill it in and re-run |
 | Installer exits "edit .env and set ANTHROPIC_API_KEY" | same as above, or you pressed Enter at the prompt |
 | Port already allocated | another stack owns `PORT` (dev.sh defaults to 3000) — set `PORT` in `.env` |

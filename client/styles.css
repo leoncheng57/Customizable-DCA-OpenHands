@@ -20,6 +20,7 @@
      used by the logo mark, nav active pill, focus rings, and selection. */
   --app-accent-a: #3ecf8e;
   --app-accent-b: #24b47e;
+  --color-text-subtle: color-mix(in oklab, var(--color-text-muted) 78%, transparent);
 
   /* Retint the theme's primary action color to match the brand so buttons
      don't clash with the accent (the vendored theme defaults to blue).

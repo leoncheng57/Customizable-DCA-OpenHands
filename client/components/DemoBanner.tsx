@@ -24,12 +24,12 @@ export function DemoBanner() {
     >
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-[12px] leading-snug">
         <FlaskConical size={13} strokeWidth={2.2} className="shrink-0" aria-hidden />
-        <span className="font-semibold">Interactive demo</span>
+        <span className="font-semibold">Fake simulation</span>
         <span aria-hidden className="opacity-40">
           ·
         </span>
         <span>
-          Every screen is a simulation running on invented data. No agent is running, nothing is
+          This is a fake simulation running on invented data. No agent is running, nothing is
           being edited, and no request leaves your browser.
         </span>
         <a

@@ -61,6 +61,7 @@ import type { RawOpenHandsEvent } from "../lib/events.js";
 import type { ConversationStats } from "../lib/statusBar.js";
 import { elapsedSeconds, isoAt, isoNow } from "./clock.js";
 import { messageEvent, statusEvent } from "./fixtures/events.js";
+import { SEEDED_SCENARIOS } from "./fixtures/manager-scenarios.js";
 import { seededConversations, type SeededConversation } from "./fixtures/seeds.js";
 import { DEMO_MODEL, DEMO_MODELS, DEMO_SERVER_VERSION, LEDGER } from "./fixtures/world.js";
 import { demoState } from "./state.js";
@@ -150,11 +151,102 @@ function fromSeed(seed: SeededConversation): DemoConversation {
   };
 }
 
+/**
+ * Give every manager/worker link a real destination. The manager fixtures own
+ * those ids, while this group owns conversation reads; deriving the rows here
+ * keeps the Hub grouping and board links coherent without duplicating ids.
+ */
+function managerLinkedConversations(): DemoConversation[] {
+  const linked: DemoConversation[] = [];
+  let offset = 0;
+
+  for (const scenario of SEEDED_SCENARIOS) {
+    const workingDir = `/workspace/${scenario.projectPath?.split("/").pop() ?? "project"}`;
+    const managerStamp = isoAt(-(90 + offset) * 60_000);
+    linked.push({
+      base: {
+        id: scenario.managerConversationId,
+        title: `${scenario.title} — manager`,
+        execution_status: "idle",
+        created_at: managerStamp,
+        updated_at: managerStamp,
+        metrics: null,
+        stats: stats(0.42, 12_400),
+        agent: { llm: { model: scenario.defaultWorkerModel } },
+        workspace: { working_dir: workingDir },
+        confirmation_policy: BUILD_POLICY,
+      },
+      events: [
+        messageEvent({
+          id: `${scenario.managerConversationId}-goal`,
+          timestamp: managerStamp,
+          role: "user",
+          text: scenario.goal,
+        }),
+        messageEvent({
+          id: `${scenario.managerConversationId}-state`,
+          timestamp: isoAt(-(89 + offset) * 60_000),
+          role: "assistant",
+          text: "This simulated manager transcript is summarized on the Manager Runs board, where its plan, workers, gates, and activity log remain interactive.",
+        }),
+        statusEvent(`${scenario.managerConversationId}-idle`, isoAt(-(88 + offset) * 60_000), "idle"),
+      ],
+      appended: [],
+      finalResponse: null,
+      progress: null,
+      deleted: false,
+    });
+
+    for (const worker of scenario.workers) {
+      const workerStamp = isoAt(-(70 + offset) * 60_000);
+      const latest = worker.steps[worker.steps.length - 1];
+      const executionStatus = latest?.executionStatus ?? (latest?.phase === "done" ? "finished" : "running");
+      linked.push({
+        base: {
+          id: worker.conversationId,
+          title: worker.task,
+          execution_status: executionStatus,
+          created_at: workerStamp,
+          updated_at: workerStamp,
+          metrics: null,
+          stats: stats(0.18, 7_800),
+          agent: { llm: { model: worker.model ?? scenario.defaultWorkerModel } },
+          workspace: { working_dir: workingDir },
+          confirmation_policy: BUILD_POLICY,
+        },
+        events: [
+          messageEvent({
+            id: `${worker.conversationId}-task`,
+            timestamp: workerStamp,
+            role: "user",
+            text: `${worker.task}\n\nContract: ${worker.contract}`,
+          }),
+          messageEvent({
+            id: `${worker.conversationId}-state`,
+            timestamp: isoAt(-(69 + offset) * 60_000),
+            role: "assistant",
+            text: latest?.message ?? "Progress for this simulated worker is tracked on the Manager Runs board.",
+          }),
+          statusEvent(`${worker.conversationId}-status`, isoAt(-(68 + offset) * 60_000), executionStatus),
+        ],
+        appended: [],
+        finalResponse: executionStatus === "finished" ? latest?.message ?? "Worker finished." : null,
+        progress: null,
+        deleted: false,
+      });
+    }
+    offset += 6;
+  }
+
+  return linked;
+}
+
 function store(): Store {
   return demoState.ensure("conversations:store", () => {
     const byId = new Map<string, DemoConversation>();
     byId.set(SCRIPT_ID, scriptedConversation());
     for (const seed of seededConversations()) byId.set(seed.summary.id, fromSeed(seed));
+    for (const conv of managerLinkedConversations()) byId.set(conv.base.id, conv);
     return { byId, seq: 0 };
   });
 }

@@ -18,6 +18,8 @@ is the product. See [docs/extending.md](docs/extending.md).
 > repository and file you see is fake. It exists to show the interface, not to do work. To actually
 > run agents, use one of the quickstarts below.
 
+<a href="https://leoncheng.dev/Customizable-DCA-OpenHands/"><img src="docs/assets/simulator-plan-mode.png" alt="The fake simulator showing an OpenHands coding-agent conversation parked at a Plan-mode write confirmation, with its task list and command audit visible." width="1280"></a>
+
 **Docs:** [leoncheng.dev/Customizable-DCA-OpenHands/openhands/contributing](https://leoncheng.dev/Customizable-DCA-OpenHands/openhands/contributing)
 — the same markdown that lives in [`docs/`](docs), rendered as a site (and in-app under
 **Contributing**).

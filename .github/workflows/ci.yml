@@ -1,0 +1,196 @@
+name: ci
+
+# No paths-ignore: under branch protection a docs-only PR with paths-ignore
+# reports NO check at all and hangs forever. The fast tier is cheap enough to
+# always run; the docs-registry unit test needs docs/ changes anyway.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Fast tier: typecheck, unit tests, prod build, and a server-boot probe
+  # (guards against "build passes but the entrypoint crashloops").
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: Server boot probe
+        run: node scripts/smoke-test.mjs
+        env:
+          PORT: "3999"
+
+  # Full tier: the no-LLM Playwright smoke suite against a real agent-canvas
+  # container (tests/e2e/README.md Step A). Needs no secrets — conversations
+  # are created but never run an LLM.
+  #
+  # The job also runs the @shots screenshot harness (tests/e2e/screenshots.spec.ts)
+  # and posts a sticky PR comment linking the artifact — that is the ONLY reason
+  # for pull-requests: write here. Screenshots are advisory evidence: their steps
+  # are continue-on-error so a capture or comment hiccup never reddens smoke
+  # (decision #9, evidence over gating). The comment links the artifact rather
+  # than inlining images. See docs/testing.md.
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      PORT: "3210"
+      OPENHANDS_INTERNAL_URL: http://localhost:8010
+      OPENHANDS_API_KEY_FILE: ./.state/agent-canvas/api-key.txt
+      OPENHANDS_PROJECTS_DIR: ${{ github.workspace }}/.ci-projects
+      OPENHANDS_ALLOWED_EMAILS: dev@local
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Seed projects fixture
+        # Two seeds: demo-project (API/grid assertions) and a folder named
+        # after this repo (the client's DEFAULT_PROJECT_PINS entry, which the
+        # pin test expects to exist). chown to the container user (uid 1000)
+        # so the agent's git doesn't refuse the repos as dubiously owned.
+        run: |
+          for p in demo-project customizable-dca-openhands; do
+            mkdir -p "$OPENHANDS_PROJECTS_DIR/$p"
+            git -C "$OPENHANDS_PROJECTS_DIR/$p" init -q -b main
+            git -C "$OPENHANDS_PROJECTS_DIR/$p" config user.email ci@local
+            git -C "$OPENHANDS_PROJECTS_DIR/$p" config user.name ci
+            echo "# $p" > "$OPENHANDS_PROJECTS_DIR/$p/README.md"
+            git -C "$OPENHANDS_PROJECTS_DIR/$p" add -A
+            git -C "$OPENHANDS_PROJECTS_DIR/$p" commit -qm init
+          done
+          sudo chown -R 1000:1000 "$OPENHANDS_PROJECTS_DIR"
+      - name: Start agent-canvas
+        run: |
+          # The .state bind mount must be writable by the container user
+          # (uid 1000; the runner is uid 1001): it receives the agent's
+          # sqlite db and API key. The projects dir is chowned at seed time.
+          mkdir -p .state
+          chmod 777 .state
+          docker compose --profile agent up -d
+          # dev.sh parity (#11): the named home volume is root-owned on first
+          # use; sessions/ must be creatable next to the projects bind mount.
+          docker compose exec -T -u root openhands \
+            chown openhands:openhands /home/openhands/workspace || true
+          # Whatever uid the agent's git runs as, never treat the seeded
+          # bind-mounted repos as dubiously owned (empty git output otherwise).
+          docker compose exec -T -u root openhands \
+            git config --system --add safe.directory '*' || true
+      - name: Wait for agent server and API key
+        run: |
+          for i in $(seq 1 120); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8010/server_info || true)
+            if [ "$code" = "200" ] && [ -s .state/agent-canvas/api-key.txt ]; then
+              # The container writes the key 0600 as uid 1000; the runner is
+              # uid 1001 and the BFF must read it (OPENHANDS_API_KEY_FILE) —
+              # unreadable key = 502 on every agent-backed endpoint.
+              docker compose exec -T -u root openhands \
+                chmod 644 /home/openhands/.openhands/agent-canvas/api-key.txt
+              [ -r .state/agent-canvas/api-key.txt ] || { echo "api key still unreadable on host"; exit 1; }
+              echo "agent up (http $code) after ~$((i * 2))s"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "agent-canvas did not become ready"
+          docker compose --profile agent logs --tail 100
+          exit 1
+      - name: Install Playwright chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run smoke suite
+        run: npm run test:e2e
+      - name: Capture PR screenshots
+        # Same stack, ~1 min extra — a separate job would re-pull the multi-GB
+        # agent-canvas image. The conversation list is stubbed inside the spec,
+        # so shots are deterministic and safe to publish regardless of what
+        # state the CI agent-server is in.
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: npm run screenshots
+      - name: Upload PR screenshots
+        id: shots
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-screenshots
+          # *.png only: manifest.json lives in the same dir but is a build
+          # input for the comment step, not something to hand a reviewer.
+          path: screenshots-out/*.png
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Sticky screenshot comment
+        # Marker-based upsert via gh api — no third-party commenter action
+        # (docs/cicd.md: pin or avoid actions with repo-token access).
+        if: github.event_name == 'pull_request' && steps.shots.outputs.artifact-url != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          ARTIFACT_URL: ${{ steps.shots.outputs.artifact-url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          MARKER="<!-- pr-screenshots-sticky -->"
+          # Render one line per DECLARED shot (from the manifest, written before
+          # Playwright started) and flag any that never landed. The declaration
+          # is what makes a partial capture visible: without it the comment
+          # would list whatever happened to be on disk and call it complete.
+          LIST=$(node -e '
+            const fs = require("fs");
+            let shots;
+            try { shots = JSON.parse(fs.readFileSync("screenshots-out/manifest.json", "utf8")); }
+            catch { console.log("_(no manifest — the harness did not start; see the run log)_"); process.exit(0); }
+            const missing = [];
+            const lines = shots.map((s) => {
+              const ok = fs.existsSync(`screenshots-out/${s.name}.png`);
+              if (!ok) missing.push(s.name);
+              return `- ${ok ? "" : "~~"}\`${s.name}.png\`${ok ? "" : "~~"} — ${s.description}`;
+            });
+            if (missing.length) {
+              lines.unshift(`> [!WARNING]`, `> **${shots.length - missing.length} of ${shots.length} declared shots produced.** Missing: ${missing.map((m) => `\`${m}\``).join(", ")}`, "");
+            }
+            console.log(lines.join("\n"));
+          ')
+          BODY=$(printf '%s\n## UI screenshots\n\nCaptured at `%s` by the @shots harness (1280×800, fixture data only — see docs/testing.md).\n\n%s\n\n**[Download the pr-screenshots artifact](%s)** · [run](%s)\n' "$MARKER" "$HEAD_SHA" "$LIST" "$ARTIFACT_URL" "$RUN_URL")
+          EXISTING=$(gh api "repos/${{ github.repository }}/issues/$PR/comments" --paginate \
+            --jq ".[] | select(.body | startswith(\"$MARKER\")) | .id" | head -1)
+          if [ -n "$EXISTING" ]; then
+            gh api -X PATCH "repos/${{ github.repository }}/issues/comments/$EXISTING" -f body="$BODY" >/dev/null
+          else
+            gh api "repos/${{ github.repository }}/issues/$PR/comments" -f body="$BODY" >/dev/null
+          fi
+      - name: Upload Playwright artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+      - name: Compose logs on failure
+        if: failure()
+        run: docker compose --profile agent logs --tail 200

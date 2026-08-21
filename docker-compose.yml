@@ -1,0 +1,82 @@
+# Local services for the runner. The web app itself runs on the host
+# (scripts/dev.sh); these containers provide the agent and (optionally) the
+# manager-runs database.
+services:
+  # The OpenHands Agent Canvas all-in-one image, run HEADLESS: this repo's
+  # native UI is the only frontend; the BFF talks to port 8010 on the host.
+  # The agent loop runs in this container with your ANTHROPIC_API_KEY.
+  openhands:
+    image: ghcr.io/openhands/agent-canvas:1.12.0
+    profiles: ["agent"]
+    environment:
+      # litellm inside the agent resolves anthropic/* models from this var.
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - LLM_API_KEY=${ANTHROPIC_API_KEY:-}
+      # Plain `git clone https://…` works without interactive prompts: the
+      # askpass helper answers username/password from GIT_TOKEN.
+      - GIT_ASKPASS=/usr/local/bin/openhands-askpass
+      - GIT_TOKEN=${OPENHANDS_GIT_TOKEN:-${GITLAB_TOKEN:-}}
+      - GIT_TERMINAL_PROMPT=0
+      # GitHub: the image ships `gh`, which authenticates from GH_TOKEN /
+      # GITHUB_TOKEN automatically (issues, PRs, gh api ...). The askpass
+      # helper also answers github.com git prompts with this token.
+      - GH_TOKEN=${OPENHANDS_GITHUB_TOKEN:-}
+      - GITHUB_TOKEN=${OPENHANDS_GITHUB_TOKEN:-}
+      # GitLab CLI (glab, installed by scripts/dev.sh): auths from GITLAB_TOKEN
+      # — same token chain the git askpass helper uses, one identity for both.
+      - GITLAB_TOKEN=${OPENHANDS_GIT_TOKEN:-${GITLAB_TOKEN:-}}
+      - GITLAB_HOST=${GITLAB_BASE_URL:-https://gitlab.com}
+      # Atlassian CLI (acli, installed by scripts/dev.sh): dev.sh performs a
+      # non-interactive login with these; agents can also re-login themselves.
+      - ATLASSIAN_SITE=${ATLASSIAN_SITE:-}
+      - ATLASSIAN_EMAIL=${ATLASSIAN_EMAIL:-}
+      - ATLASSIAN_API_TOKEN=${ATLASSIAN_API_TOKEN:-}
+      # Notion CLI (ntn, installed by scripts/dev.sh): the CLI reads this
+      # integration token directly (overrides any keychain login), so agents
+      # can run Notion workflows — e.g. scripts shelling out to `ntn api …`.
+      - NOTION_API_TOKEN=${NOTION_API_TOKEN:-}
+    ports:
+      # The app runs on the host, so the agent-server API must be reachable
+      # there (the hub kept this container off the host network instead).
+      - "8010:8000"
+    volumes:
+      # Named volume over the whole home dir (docker copies the image's home
+      # into the empty volume on first use): keeps workspace/sessions/<uuid>
+      # durable across container recreates.
+      - openhands-home:/home/openhands
+      # The image declares VOLUME /home/openhands/.openhands — bind it to a
+      # host dir so the app (on the host) can read the auto-generated
+      # agent-canvas/api-key.txt (OPENHANDS_API_KEY_FILE=./.state/...).
+      - ./.state:/home/openhands/.openhands
+      # Host projects root — local-folder conversations target
+      # /home/openhands/workspace/local/<dir>. Set OPENHANDS_PROJECTS_DIR in
+      # .env (absolute path; scripts/dev.sh expands a leading ~).
+      - ${OPENHANDS_PROJECTS_DIR:-./.projects}:/home/openhands/workspace/local
+      # The image also declares VOLUME /projects; name it so recreates don't
+      # leak anonymous volumes.
+      - openhands-projects:/projects
+      - ./scripts/openhands-askpass.sh:/usr/local/bin/openhands-askpass:ro
+
+  postgres:
+    image: postgres:16-alpine
+    # Manager runs are optional — only started with the "manager" profile.
+    profiles: ["manager"]
+    environment:
+      POSTGRES_DB: openhands
+      POSTGRES_USER: openhands
+      POSTGRES_PASSWORD: openhands
+    ports:
+      # 55432 on the host to avoid colliding with any local postgres.
+      - "55432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openhands -d openhands"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
+  openhands-home:
+  openhands-projects:

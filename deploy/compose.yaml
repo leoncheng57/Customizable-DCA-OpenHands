@@ -1,0 +1,111 @@
+# Single-click package: the whole stack in docker (app + agent, optional
+# postgres for manager runs). This is the compose file shipped in the GitHub
+# Release bundle — the dev workflow (scripts/dev.sh + docker-compose.yml)
+# keeps running the app on the host instead.
+#
+# Requires only Docker. Bring-up: deploy/install.sh (or `docker compose up -d`
+# next to a filled-in .env — see env.example).
+name: openhands-app
+
+services:
+  # The BFF + UI, built by the release workflow from this repo's Dockerfile.
+  app:
+    image: ${OPENHANDS_APP_IMAGE:-ghcr.io/leoncheng57/customizable-dca-openhands}:${OPENHANDS_APP_VERSION:-latest}
+    restart: unless-stopped
+    depends_on:
+      - openhands
+    ports:
+      # Loopback by default: ALLOW_DEV_AUTH means anyone who can reach the
+      # port is "the" user. Set OPENHANDS_BIND=0.0.0.0 to expose on the LAN
+      # (e.g. behind Tailscale) at your own risk.
+      - "${OPENHANDS_BIND:-127.0.0.1}:${PORT:-3000}:3000"
+    volumes:
+      # Agent-canvas mints its API key into this dir on first boot (it is the
+      # agent container's /home/openhands/.openhands); the BFF polls the file.
+      - ./.state:/state:ro
+    environment:
+      - NODE_ENV=production
+      # Single-user local package: keep the dev@local identity fallback even
+      # though NODE_ENV=production (see server/auth.ts).
+      - ALLOW_DEV_AUTH=true
+      - PORT=3000
+      - OPENHANDS_INTERNAL_URL=http://openhands:8000
+      - OPENHANDS_API_KEY_FILE=/state/agent-canvas/api-key.txt
+      - OPENHANDS_ALLOWED_EMAILS=${OPENHANDS_ALLOWED_EMAILS:-dev@local}
+      - OPENHANDS_HUB_PUBLIC_URL=${OPENHANDS_PUBLIC_URL:-http://localhost:${PORT:-3000}}
+      - OPENHANDS_PUBLIC_URL=${OPENHANDS_PUBLIC_URL:-http://localhost:${PORT:-3000}}
+      # Optional integrations — all forwarded from .env when set.
+      - OPENHANDS_MODELS=${OPENHANDS_MODELS:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-}
+      - GITLAB_TOKEN=${GITLAB_TOKEN:-}
+      - GITLAB_BASE_URL=${GITLAB_BASE_URL:-}
+      - OPENHANDS_GITHUB_TOKEN=${OPENHANDS_GITHUB_TOKEN:-}
+      - OPENHANDS_REPO_URL_PATTERN=${OPENHANDS_REPO_URL_PATTERN:-}
+      - OPENHANDS_NTFY_URL=${OPENHANDS_NTFY_URL:-}
+      - OPENHANDS_NTFY_TOPIC=${OPENHANDS_NTFY_TOPIC:-}
+      - OPENHANDS_NTFY_TOKEN=${OPENHANDS_NTFY_TOKEN:-}
+      - OPENHANDS_NOTIFY_IDLE=${OPENHANDS_NOTIFY_IDLE:-}
+      # Manager runs (optional): enable with COMPOSE_PROFILES=manager and
+      # PGHOST=postgres in .env — the app reaches postgres in-network.
+      - PGHOST=${PGHOST:-}
+      - PGPORT=5432
+      - PGDATABASE=${PGDATABASE:-openhands}
+      - PGUSER=${PGUSER:-openhands}
+      - PGPASSWORD=${PGPASSWORD:-openhands}
+
+  # The OpenHands Agent Canvas all-in-one image, run HEADLESS — same service
+  # as the dev docker-compose.yml, minus the host port (the app talks to it
+  # in-network on :8000).
+  openhands:
+    image: ghcr.io/openhands/agent-canvas:1.12.0
+    restart: unless-stopped
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - LLM_API_KEY=${ANTHROPIC_API_KEY:-}
+      - GIT_ASKPASS=/usr/local/bin/openhands-askpass
+      - GIT_TOKEN=${OPENHANDS_GIT_TOKEN:-${GITLAB_TOKEN:-}}
+      - GIT_TERMINAL_PROMPT=0
+      - GH_TOKEN=${OPENHANDS_GITHUB_TOKEN:-}
+      - GITHUB_TOKEN=${OPENHANDS_GITHUB_TOKEN:-}
+      - GITLAB_TOKEN=${OPENHANDS_GIT_TOKEN:-${GITLAB_TOKEN:-}}
+      - GITLAB_HOST=${GITLAB_BASE_URL:-https://gitlab.com}
+    # The projects bind mount makes docker create /home/openhands/workspace
+    # as root on first boot, which blocks the agent (uid 10001) from creating
+    # workspace dirs — same fix scripts/dev.sh applies, as a lifecycle hook.
+    post_start:
+      - command: ["chown", "openhands:openhands", "/home/openhands/workspace"]
+        user: root
+    volumes:
+      - openhands-home:/home/openhands
+      # Bind the image's VOLUME /home/openhands/.openhands to a local dir so
+      # the app container can read the auto-generated api-key.txt (mounted
+      # RO at /state there).
+      - ./.state:/home/openhands/.openhands
+      # Host projects root for local-folder conversations. install.sh writes
+      # an absolute path into .env (compose does not expand ~).
+      - ${OPENHANDS_PROJECTS_DIR:-./projects}:/home/openhands/workspace/local
+      - openhands-projects:/projects
+      - ./openhands-askpass.sh:/usr/local/bin/openhands-askpass:ro
+
+  postgres:
+    image: postgres:16-alpine
+    # Manager runs are optional — enable with COMPOSE_PROFILES=manager.
+    profiles: ["manager"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: openhands
+      POSTGRES_USER: openhands
+      POSTGRES_PASSWORD: openhands
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openhands -d openhands"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
+  openhands-home:
+  openhands-projects:

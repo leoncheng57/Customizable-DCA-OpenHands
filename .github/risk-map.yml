@@ -1,0 +1,125 @@
+# Machine-readable risk map — the single source of truth for per-area risk.
+#
+# Consumed by:
+#   - .github/workflows (per-PR risk labels + sticky comment)  — see docs/cicd.md
+#   - docs/risk-map.md (human rationale — keep the two in sync)
+#
+# Dimensions (each low|medium|high):
+#   security  — auth boundaries, credential handling, proxy surfaces
+#   stability — how easily a change here breaks core flows
+#   blast     — how much of the app a regression takes down
+#   cost      — can a bug here burn LLM spend
+#
+# First matching entry wins (order: most-specific paths first).
+
+areas:
+  - name: auth & credentials
+    paths:
+      - "server/auth.ts"
+      - "server/openhands/upstream.ts"
+      - "scripts/openhands-askpass.sh"
+    security: high
+    stability: high
+    blast: high
+    cost: low
+
+  - name: manager orchestration
+    paths:
+      - "server/openhands/manager/**"
+    security: low
+    stability: medium
+    blast: medium
+    cost: high
+
+  - name: auto-resume
+    paths:
+      - "server/openhands/autoResume.ts"
+    security: low
+    stability: medium
+    blast: low
+    cost: high
+
+  - name: main BFF router
+    paths:
+      - "server/openhands/setup.ts"
+      - "server/index.ts"
+    security: high
+    stability: high
+    blast: high
+    cost: medium
+
+  - name: BFF modules
+    paths:
+      - "server/openhands/**"
+      - "server/*.ts"
+    security: medium
+    stability: medium
+    blast: medium
+    cost: low
+
+  - name: infra & agent container
+    paths:
+      - "docker-compose.yml"
+      - "scripts/dev.sh"
+      - "scripts/sync-mcp.sh"
+      - "scripts/sync-agent-settings.sh"
+      - "scripts/seed-agent-settings.mjs"
+      - ".env.example"
+      # Packaging: what end users actually run (docs/packaging.md).
+      - "deploy/**"
+      - "Dockerfile"
+      - ".dockerignore"
+    security: high
+    stability: medium
+    blast: high
+    cost: low
+
+  - name: client shell & api layer
+    paths:
+      - "client/main.tsx"
+      - "client/lib/**"
+      - "vite.config.ts"
+    security: medium
+    stability: medium
+    blast: high
+    cost: low
+
+  - name: conversation UI
+    paths:
+      - "client/pages/Conversation.tsx"
+      - "client/components/**"
+    security: low
+    stability: medium
+    blast: medium
+    cost: low
+
+  - name: pages & design system
+    paths:
+      - "client/pages/**"
+      - "client/ds/**"
+      - "client/theme/**"
+      - "client/styles.css"
+    security: low
+    stability: low
+    blast: low
+    cost: low
+
+  - name: ci & tests
+    paths:
+      - ".github/**"
+      - "tests/**"
+      - "playwright.config.ts"
+      - "vitest.config.ts"
+    security: medium
+    stability: low
+    blast: low
+    cost: low
+
+  - name: docs
+    paths:
+      - "docs/**"
+      - "*.md"
+    security: low
+    stability: low
+    blast: low
+    cost: low

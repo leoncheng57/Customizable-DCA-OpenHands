@@ -1,0 +1,24 @@
+# Path-based PR labels (actions/labeler v5 syntax).
+server:
+  - changed-files:
+      - any-glob-to-any-file: ["server/**"]
+
+client:
+  - changed-files:
+      - any-glob-to-any-file: ["client/**"]
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file: [".github/**", "scripts/ci/**", "scripts/smoke-test.mjs", "renovate.json"]
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file: ["docs/**", "**/*.md"]
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file: ["tests/**", "playwright.config.ts", "vitest.config.ts"]
+
+infra:
+  - changed-files:
+      - any-glob-to-any-file: ["docker-compose.yml", "scripts/dev.sh", "scripts/openhands-askpass.sh", ".env.example"]

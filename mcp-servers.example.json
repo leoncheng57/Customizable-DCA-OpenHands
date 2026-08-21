@@ -1,0 +1,24 @@
+{
+  "notion-personal": {
+    "transport": "stdio",
+    "command": "npx",
+    "args": ["-y", "@notionhq/notion-mcp-server"],
+    "env": { "NOTION_TOKEN": "ntn_..." }
+  },
+  "playwright-mcp": {
+    "transport": "stdio",
+    "command": "npx",
+    "args": [
+      "-y",
+      "@playwright/mcp@latest",
+      "--headless",
+      "--isolated",
+      "--no-sandbox"
+    ]
+  },
+  "slack-mcp": {
+    "transport": "streamable-http",
+    "url": "https://slack-mcp.example.com/mcp",
+    "auth": { "strategy": "oauth2" }
+  }
+}

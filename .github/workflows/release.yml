@@ -1,0 +1,101 @@
+name: release
+
+# Publishes the single-click package for a release tag:
+#   1. multi-arch app image → ghcr.io/<repo> (:<version> + :latest)
+#   2. release assets: install.sh + openhands-app-bundle.tar.gz
+#      (compose.yaml, env.example, install.sh, askpass helper)
+#
+# Trigger chain: release-please creates releases with the repo GITHUB_TOKEN,
+# and GITHUB_TOKEN-created events do NOT fire `on: release` workflows — so
+# release-please.yml calls this workflow directly (workflow_call) when it cuts
+# a release. `on: release` is kept for manually published releases, and
+# workflow_dispatch either re-publishes an existing tag or (with no tag)
+# builds an ':edge' test image without touching release assets.
+
+on:
+  release:
+    types: [published]
+  workflow_call:
+    inputs:
+      tag:
+        description: "Release tag to publish (vX.Y.Z)"
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to publish (vX.Y.Z); empty = build an :edge test image only"
+        type: string
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: release-${{ github.event.release.tag_name || inputs.tag || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Build the tagged code, not whatever ref the workflow ran on
+          # (empty → default branch for :edge builds).
+          ref: ${{ github.event.release.tag_name || inputs.tag }}
+
+      - id: meta
+        name: Resolve tag → image tags
+        env:
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+        run: |
+          set -euo pipefail
+          # GHCR image names must be lowercase; the repo slug is mixed-case.
+          IMAGE="ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')"
+          if [ -n "$TAG" ]; then
+            VERSION="${TAG#v}"
+            echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+            echo "tags=$IMAGE:$VERSION,$IMAGE:latest" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=" >> "$GITHUB_OUTPUT"
+            echo "tags=$IMAGE:edge" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Pack release bundle
+        if: steps.meta.outputs.tag != ''
+        run: |
+          set -euo pipefail
+          mkdir -p bundle
+          cp deploy/compose.yaml deploy/env.example deploy/install.sh bundle/
+          cp scripts/openhands-askpass.sh bundle/openhands-askpass.sh
+          tar -czf openhands-app-bundle.tar.gz -C bundle .
+
+      - name: Upload release assets
+        if: steps.meta.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ steps.meta.outputs.tag }}" \
+            openhands-app-bundle.tar.gz deploy/install.sh --clobber

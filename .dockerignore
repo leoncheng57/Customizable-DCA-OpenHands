@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.git/
+.state/
+.projects/
+.env
+.env.*
+!.env.example
+mcp-servers.json
+test-results/
+playwright-report/
+tests/
+*.log
+.DS_Store
+.github/
+.worktrees/

@@ -1,0 +1,1197 @@
+/* Base design tokens (light/dark variable definitions). Generated file —
+ * prefer editing the semantic --color-* aliases in tailwind-bridge.css or
+ * app-level styles over hand-editing values here. */
+:root {
+  --ui-color-opacity-light-0: rgba(0, 0, 0, 0);
+  --ui-color-opacity-light-3: rgba(0, 0, 0, 0.03);
+  --ui-color-opacity-light-5: rgba(0, 0, 0, 0.05);
+  --ui-color-opacity-light-10: rgba(0, 0, 0, 0.1);
+  --ui-color-opacity-light-15: rgba(0, 0, 0, 0.15);
+  --ui-color-opacity-light-25: rgba(0, 0, 0, 0.25);
+  --ui-color-opacity-light-35: rgba(0, 0, 0, 0.35);
+  --ui-color-opacity-light-50: rgba(0, 0, 0, 0.5);
+  --ui-color-opacity-dark-25: rgba(255, 255, 255, 0.25);
+  --ui-color-opacity-dark-35: rgba(255, 255, 255, 0.35);
+  --ui-color-opacity-debug-25: rgba(109, 92, 216, 0.25);
+  --ui-color-opacity-debug-100: rgb(109, 92, 216);
+  --ui-color-blue-50: rgb(224, 240, 255);
+  --ui-color-blue-100: rgb(207, 231, 255);
+  --ui-color-blue-200: rgb(151, 202, 255);
+  --ui-color-blue-300: rgb(96, 175, 255);
+  --ui-color-blue-400: rgb(46, 145, 236);
+  --ui-color-blue-500: rgb(0, 112, 201);
+  --ui-color-blue-600: rgb(0, 83, 169);
+  --ui-color-blue-700: rgb(0, 56, 141);
+  --ui-color-blue-800: rgb(0, 31, 115);
+  --ui-color-blue-900: rgb(0, 5, 96);
+  --ui-color-purple-50: rgb(244, 244, 255);
+  --ui-color-purple-100: rgb(227, 227, 255);
+  --ui-color-purple-200: rgb(195, 192, 255);
+  --ui-color-purple-300: rgb(169, 159, 255);
+  --ui-color-purple-400: rgb(139, 123, 255);
+  --ui-color-purple-500: rgb(109, 92, 216);
+  --ui-color-purple-600: rgb(84, 68, 172);
+  --ui-color-purple-700: rgb(61, 49, 130);
+  --ui-color-purple-800: rgb(40, 31, 91);
+  --ui-color-purple-900: rgb(24, 18, 61);
+  --ui-color-green-50: rgb(222, 253, 238);
+  --ui-color-green-100: rgb(156, 247, 209);
+  --ui-color-green-200: rgb(67, 222, 169);
+  --ui-color-green-300: rgb(0, 194, 143);
+  --ui-color-green-400: rgb(0, 161, 116);
+  --ui-color-green-500: rgb(0, 127, 89);
+  --ui-color-green-600: rgb(0, 97, 67);
+  --ui-color-green-700: rgb(0, 71, 48);
+  --ui-color-green-800: rgb(0, 48, 31);
+  --ui-color-green-900: rgb(0, 30, 18);
+  --ui-color-red-50: rgb(255, 233, 229);
+  --ui-color-red-100: rgb(255, 221, 216);
+  --ui-color-red-200: rgb(255, 178, 167);
+  --ui-color-red-300: rgb(255, 137, 120);
+  --ui-color-red-400: rgb(249, 85, 62);
+  --ui-color-red-500: rgb(195, 67, 49);
+  --ui-color-red-600: rgb(150, 51, 38);
+  --ui-color-red-700: rgb(111, 38, 28);
+  --ui-color-red-800: rgb(74, 25, 19);
+  --ui-color-red-900: rgb(45, 16, 11);
+  --ui-color-yellow-50: rgb(255, 246, 197);
+  --ui-color-yellow-100: rgb(255, 229, 94);
+  --ui-color-yellow-200: rgb(232, 195, 0);
+  --ui-color-yellow-300: rgb(201, 168, 0);
+  --ui-color-yellow-400: rgb(167, 140, 0);
+  --ui-color-yellow-500: rgb(130, 110, 0);
+  --ui-color-yellow-600: rgb(100, 84, 0);
+  --ui-color-yellow-700: rgb(73, 61, 0);
+  --ui-color-yellow-800: rgb(48, 41, 0);
+  --ui-color-yellow-900: rgb(30, 25, 0);
+  --ui-color-gray-0: rgb(250, 250, 250);
+  --ui-color-gray-50: rgb(245, 245, 245);
+  --ui-color-gray-100: rgb(229, 229, 229);
+  --ui-color-gray-200: rgb(198, 198, 198);
+  --ui-color-gray-300: rgb(171, 171, 171);
+  --ui-color-gray-400: rgb(142, 142, 142);
+  --ui-color-gray-500: rgb(111, 111, 111);
+  --ui-color-gray-600: rgb(85, 85, 85);
+  --ui-color-gray-700: rgb(62, 62, 62);
+  --ui-color-gray-800: rgb(41, 41, 41);
+  --ui-color-gray-900: rgb(25, 25, 25);
+  --ui-color-white: rgb(255, 255, 255);
+  --ui-color-black: rgb(0, 0, 0);
+  --ui-color-brand: rgb(15, 43, 70);
+  --ui-color-transparent: rgba(255, 255, 255, 0);
+  --csstools-light-dark-toggle--0: var(--csstools-color-scheme--light) rgb(25, 25, 25);
+  --ui-color-background-app: var(--csstools-light-dark-toggle--0, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--1: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-background-surface: var(--csstools-light-dark-toggle--1, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--2: var(--csstools-color-scheme--light) rgb(255, 255, 255);
+  --ui-color-background-surface-invert: var(--csstools-light-dark-toggle--2, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--3: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-background-surface-canvas: var(--csstools-light-dark-toggle--3, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--4: var(--csstools-color-scheme--light) rgb(25, 25, 25);
+  --ui-color-background-surface-canvas-secondary: var(--csstools-light-dark-toggle--4, rgb(245, 245, 245));
+  --csstools-light-dark-toggle--5: var(--csstools-color-scheme--light) rgb(111, 111, 111);
+  --ui-color-background-surface-neutral: var(--csstools-light-dark-toggle--5, rgb(198, 198, 198));
+  --csstools-light-dark-toggle--6: var(--csstools-color-scheme--light) rgb(85, 85, 85);
+  --ui-color-background-surface-neutral-hover: var(--csstools-light-dark-toggle--6, rgb(171, 171, 171));
+  --csstools-light-dark-toggle--7: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-background-surface-neutral-pressed: var(--csstools-light-dark-toggle--7, rgb(142, 142, 142));
+  --csstools-light-dark-toggle--8: var(--csstools-color-scheme--light) rgb(85, 85, 85);
+  --ui-color-background-surface-neutral-muted: var(--csstools-light-dark-toggle--8, rgb(229, 229, 229));
+  --csstools-light-dark-toggle--9: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-background-surface-neutral-muted-hover: var(--csstools-light-dark-toggle--9, rgb(198, 198, 198));
+  --csstools-light-dark-toggle--10: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-background-surface-neutral-muted-pressed: var(--csstools-light-dark-toggle--10, rgb(171, 171, 171));
+  --csstools-light-dark-toggle--11: var(--csstools-color-scheme--light) rgb(151, 202, 255);
+  --ui-color-background-surface-info: var(--csstools-light-dark-toggle--11, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--12: var(--csstools-color-scheme--light) rgb(0, 56, 141);
+  --ui-color-background-surface-info-muted: var(--csstools-light-dark-toggle--12, rgb(224, 240, 255));
+  --csstools-light-dark-toggle--13: var(--csstools-color-scheme--light) rgb(67, 222, 169);
+  --ui-color-background-surface-success: var(--csstools-light-dark-toggle--13, rgb(0, 127, 89));
+  --csstools-light-dark-toggle--14: var(--csstools-color-scheme--light) rgb(0, 71, 48);
+  --ui-color-background-surface-success-muted: var(--csstools-light-dark-toggle--14, rgb(222, 253, 238));
+  --csstools-light-dark-toggle--15: var(--csstools-color-scheme--light) rgb(232, 195, 0);
+  --ui-color-background-surface-warning: var(--csstools-light-dark-toggle--15, rgb(201, 168, 0));
+  --csstools-light-dark-toggle--16: var(--csstools-color-scheme--light) rgb(130, 110, 0);
+  --ui-color-background-surface-warning-muted: var(--csstools-light-dark-toggle--16, rgb(255, 246, 197));
+  --csstools-light-dark-toggle--17: var(--csstools-color-scheme--light) rgb(255, 178, 167);
+  --ui-color-background-surface-danger: var(--csstools-light-dark-toggle--17, rgb(195, 67, 49));
+  --csstools-light-dark-toggle--18: var(--csstools-color-scheme--light) rgb(111, 38, 28);
+  --ui-color-background-surface-danger-muted: var(--csstools-light-dark-toggle--18, rgb(255, 233, 229));
+  --csstools-light-dark-toggle--19: var(--csstools-color-scheme--light) rgb(96, 175, 255);
+  --ui-color-background-surface-primary: var(--csstools-light-dark-toggle--19, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--20: var(--csstools-color-scheme--light) rgb(0, 56, 141);
+  --ui-color-background-surface-primary-muted: var(--csstools-light-dark-toggle--20, rgb(224, 240, 255));
+  --csstools-light-dark-toggle--21: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-background-action: var(--csstools-light-dark-toggle--21, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--22: var(--csstools-color-scheme--light) rgb(0, 56, 141);
+  --ui-color-background-action-active: var(--csstools-light-dark-toggle--22, rgb(224, 240, 255));
+  --csstools-light-dark-toggle--23: var(--csstools-color-scheme--light) rgb(61, 49, 130);
+  --ui-color-background-action-active-alternative: var(--csstools-light-dark-toggle--23, rgb(244, 244, 255));
+  --csstools-light-dark-toggle--24: var(--csstools-color-scheme--light) rgb(255, 255, 255);
+  --ui-color-background-action-brand: var(--csstools-light-dark-toggle--24, rgb(15, 43, 70));
+  --csstools-light-dark-toggle--25: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-background-action-basic: var(--csstools-light-dark-toggle--25, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--26: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-background-action-basic-hover: var(--csstools-light-dark-toggle--26, rgb(245, 245, 245));
+  --csstools-light-dark-toggle--27: var(--csstools-color-scheme--light) rgb(25, 25, 25);
+  --ui-color-background-action-basic-pressed: var(--csstools-light-dark-toggle--27, rgb(229, 229, 229));
+  --csstools-light-dark-toggle--28: var(--csstools-color-scheme--light) rgba(255, 255, 255, 0);
+  --ui-color-background-action-ghost: var(--csstools-light-dark-toggle--28, rgba(255, 255, 255, 0));
+  --csstools-light-dark-toggle--29: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.15);
+  --ui-color-background-action-ghost-hover: var(--csstools-light-dark-toggle--29, rgba(0, 0, 0, 0.05));
+  --csstools-light-dark-toggle--30: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.25);
+  --ui-color-background-action-ghost-pressed: var(--csstools-light-dark-toggle--30, rgba(0, 0, 0, 0.1));
+  --csstools-light-dark-toggle--31: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.15);
+  --ui-color-background-action-disabled: var(--csstools-light-dark-toggle--31, rgba(0, 0, 0, 0.03));
+  --csstools-light-dark-toggle--32: var(--csstools-color-scheme--light) rgb(0, 112, 201);
+  --ui-color-background-action-primary: var(--csstools-light-dark-toggle--32, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--33: var(--csstools-color-scheme--light) rgb(0, 83, 169);
+  --ui-color-background-action-primary-hover: var(--csstools-light-dark-toggle--33, rgb(0, 83, 169));
+  --csstools-light-dark-toggle--34: var(--csstools-color-scheme--light) rgb(0, 56, 141);
+  --ui-color-background-action-primary-pressed: var(--csstools-light-dark-toggle--34, rgb(0, 56, 141));
+  --csstools-light-dark-toggle--35: var(--csstools-color-scheme--light) rgb(195, 67, 49);
+  --ui-color-background-action-danger: var(--csstools-light-dark-toggle--35, rgb(195, 67, 49));
+  --csstools-light-dark-toggle--36: var(--csstools-color-scheme--light) rgb(150, 51, 38);
+  --ui-color-background-action-danger-hover: var(--csstools-light-dark-toggle--36, rgb(150, 51, 38));
+  --csstools-light-dark-toggle--37: var(--csstools-color-scheme--light) rgb(111, 38, 28);
+  --ui-color-background-action-danger-pressed: var(--csstools-light-dark-toggle--37, rgb(111, 38, 28));
+  --csstools-light-dark-toggle--38: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.5);
+  --ui-color-background-overlay: var(--csstools-light-dark-toggle--38, rgba(0, 0, 0, 0.5));
+  --csstools-light-dark-toggle--39: var(--csstools-color-scheme--light) rgb(245, 245, 245);
+  --ui-color-text-default: var(--csstools-light-dark-toggle--39, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--40: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-text-default-invert: var(--csstools-light-dark-toggle--40, rgb(245, 245, 245));
+  --csstools-light-dark-toggle--41: var(--csstools-color-scheme--light) rgb(171, 171, 171);
+  --ui-color-text-muted: var(--csstools-light-dark-toggle--41, rgb(111, 111, 111));
+  --csstools-light-dark-toggle--42: var(--csstools-color-scheme--light) rgb(224, 240, 255);
+  --ui-color-text-info: var(--csstools-light-dark-toggle--42, rgb(0, 56, 141));
+  --csstools-light-dark-toggle--43: var(--csstools-color-scheme--light) rgb(222, 253, 238);
+  --ui-color-text-success: var(--csstools-light-dark-toggle--43, rgb(0, 71, 48));
+  --csstools-light-dark-toggle--44: var(--csstools-color-scheme--light) rgb(255, 246, 197);
+  --ui-color-text-warning: var(--csstools-light-dark-toggle--44, rgb(73, 61, 0));
+  --csstools-light-dark-toggle--45: var(--csstools-color-scheme--light) rgb(255, 233, 229);
+  --ui-color-text-danger: var(--csstools-light-dark-toggle--45, rgb(111, 38, 28));
+  --csstools-light-dark-toggle--46: var(--csstools-color-scheme--light) rgb(96, 175, 255);
+  --ui-color-text-info-muted: var(--csstools-light-dark-toggle--46, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--47: var(--csstools-color-scheme--light) rgb(0, 194, 143);
+  --ui-color-text-success-muted: var(--csstools-light-dark-toggle--47, rgb(0, 127, 89));
+  --csstools-light-dark-toggle--48: var(--csstools-color-scheme--light) rgb(201, 168, 0);
+  --ui-color-text-warning-muted: var(--csstools-light-dark-toggle--48, rgb(130, 110, 0));
+  --csstools-light-dark-toggle--49: var(--csstools-color-scheme--light) rgb(255, 137, 120);
+  --ui-color-text-danger-muted: var(--csstools-light-dark-toggle--49, rgb(195, 67, 49));
+  --csstools-light-dark-toggle--50: var(--csstools-color-scheme--light) rgb(245, 245, 245);
+  --ui-color-text-action: var(--csstools-light-dark-toggle--50, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--51: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-text-action-invert: var(--csstools-light-dark-toggle--51, rgb(245, 245, 245));
+  --csstools-light-dark-toggle--52: var(--csstools-color-scheme--light) rgb(224, 240, 255);
+  --ui-color-text-action-active: var(--csstools-light-dark-toggle--52, rgb(0, 83, 169));
+  --csstools-light-dark-toggle--53: var(--csstools-color-scheme--light) rgb(244, 244, 255);
+  --ui-color-text-action-active-alternative: var(--csstools-light-dark-toggle--53, rgb(84, 68, 172));
+  --csstools-light-dark-toggle--54: var(--csstools-color-scheme--light) rgb(245, 245, 245);
+  --ui-color-text-action-basic: var(--csstools-light-dark-toggle--54, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--55: var(--csstools-color-scheme--light) rgb(245, 245, 245);
+  --ui-color-text-action-ghost: var(--csstools-light-dark-toggle--55, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--56: var(--csstools-color-scheme--light) rgb(224, 240, 255);
+  --ui-color-text-action-primary: var(--csstools-light-dark-toggle--56, rgb(224, 240, 255));
+  --csstools-light-dark-toggle--57: var(--csstools-color-scheme--light) rgb(255, 233, 229);
+  --ui-color-text-action-danger: var(--csstools-light-dark-toggle--57, rgb(255, 233, 229));
+  --csstools-light-dark-toggle--58: var(--csstools-color-scheme--light) rgba(255, 255, 255, 0.25);
+  --ui-color-text-action-disabled: var(--csstools-light-dark-toggle--58, rgba(0, 0, 0, 0.25));
+  --csstools-light-dark-toggle--59: var(--csstools-color-scheme--light) rgb(224, 240, 255);
+  --ui-color-text-link: var(--csstools-light-dark-toggle--59, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--60: var(--csstools-color-scheme--light) rgb(207, 231, 255);
+  --ui-color-text-link-hover: var(--csstools-light-dark-toggle--60, rgb(0, 83, 169));
+  --csstools-light-dark-toggle--61: var(--csstools-color-scheme--light) rgb(151, 202, 255);
+  --ui-color-text-link-pressed: var(--csstools-light-dark-toggle--61, rgb(0, 56, 141));
+  --csstools-light-dark-toggle--62: var(--csstools-color-scheme--light) rgb(142, 142, 142);
+  --ui-color-text-link-disabled: var(--csstools-light-dark-toggle--62, rgba(0, 0, 0, 0.25));
+  --csstools-light-dark-toggle--63: var(--csstools-color-scheme--light) rgb(255, 255, 255);
+  --ui-color-text-white: var(--csstools-light-dark-toggle--63, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--64: var(--csstools-color-scheme--light) rgb(0, 0, 0);
+  --ui-color-text-black: var(--csstools-light-dark-toggle--64, rgb(0, 0, 0));
+  --csstools-light-dark-toggle--65: var(--csstools-color-scheme--light) rgb(15, 43, 70);
+  --ui-color-text-brand: var(--csstools-light-dark-toggle--65, rgb(15, 43, 70));
+  --csstools-light-dark-toggle--66: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-border-default: var(--csstools-light-dark-toggle--66, rgb(229, 229, 229));
+  --csstools-light-dark-toggle--67: var(--csstools-color-scheme--light) rgb(245, 245, 245);
+  --ui-color-border-default-invert: var(--csstools-light-dark-toggle--67, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--68: var(--csstools-color-scheme--light) rgb(85, 85, 85);
+  --ui-color-border-action-basic-default: var(--csstools-light-dark-toggle--68, rgb(229, 229, 229));
+  --csstools-light-dark-toggle--69: var(--csstools-color-scheme--light) rgb(0, 56, 141);
+  --ui-color-border-action-basic-active: var(--csstools-light-dark-toggle--69, rgb(224, 240, 255));
+  --csstools-light-dark-toggle--70: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-border-action-basic-hover: var(--csstools-light-dark-toggle--70, rgb(198, 198, 198));
+  --csstools-light-dark-toggle--71: var(--csstools-color-scheme--light) rgb(25, 25, 25);
+  --ui-color-border-action-basic-pressed: var(--csstools-light-dark-toggle--71, rgb(171, 171, 171));
+  --csstools-light-dark-toggle--72: var(--csstools-color-scheme--light) rgba(255, 255, 255, 0.25);
+  --ui-color-border-action-disabled: var(--csstools-light-dark-toggle--72, rgba(0, 0, 0, 0.25));
+  --csstools-light-dark-toggle--73: var(--csstools-color-scheme--light) rgb(0, 112, 201);
+  --ui-color-border-action-active: var(--csstools-light-dark-toggle--73, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--74: var(--csstools-color-scheme--light) rgb(109, 92, 216);
+  --ui-color-border-action-active-alternative: var(--csstools-light-dark-toggle--74, rgb(109, 92, 216));
+  --csstools-light-dark-toggle--75: var(--csstools-color-scheme--light) rgb(85, 85, 85);
+  --ui-color-border-action-secondary-default: var(--csstools-light-dark-toggle--75, rgb(171, 171, 171));
+  --csstools-light-dark-toggle--76: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-border-action-secondary-hover: var(--csstools-light-dark-toggle--76, rgb(142, 142, 142));
+  --csstools-light-dark-toggle--77: var(--csstools-color-scheme--light) rgb(195, 67, 49);
+  --ui-color-border-action-danger: var(--csstools-light-dark-toggle--77, rgb(195, 67, 49));
+  --csstools-light-dark-toggle--78: var(--csstools-color-scheme--light) rgb(0, 127, 89);
+  --ui-color-border-action-success: var(--csstools-light-dark-toggle--78, rgb(0, 127, 89));
+  --csstools-light-dark-toggle--79: var(--csstools-color-scheme--light) rgb(46, 145, 236);
+  --ui-color-border-surface-info: var(--csstools-light-dark-toggle--79, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--80: var(--csstools-color-scheme--light) rgb(0, 161, 116);
+  --ui-color-border-surface-success: var(--csstools-light-dark-toggle--80, rgb(0, 127, 89));
+  --csstools-light-dark-toggle--81: var(--csstools-color-scheme--light) rgb(167, 140, 0);
+  --ui-color-border-surface-warning: var(--csstools-light-dark-toggle--81, rgb(130, 110, 0));
+  --csstools-light-dark-toggle--82: var(--csstools-color-scheme--light) rgb(249, 85, 62);
+  --ui-color-border-surface-danger: var(--csstools-light-dark-toggle--82, rgb(195, 67, 49));
+  --csstools-light-dark-toggle--83: var(--csstools-color-scheme--light) rgb(255, 255, 255);
+  --ui-color-border-focus: var(--csstools-light-dark-toggle--83, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--84: var(--csstools-color-scheme--light) rgba(255, 255, 255, 0);
+  --ui-color-border-debug: var(--csstools-light-dark-toggle--84, rgba(255, 255, 255, 0));
+  --ui-dimension-0: 0;
+  --ui-dimension-1: 0.0625rem;
+  --ui-dimension-2: 0.125rem;
+  --ui-dimension-4: 0.25rem;
+  --ui-dimension-6: 0.375rem;
+  --ui-dimension-8: 0.5rem;
+  --ui-dimension-10: 0.625rem;
+  --ui-dimension-12: 0.75rem;
+  --ui-dimension-14: 0.875rem;
+  --ui-dimension-16: 1rem;
+  --ui-dimension-18: 1.125rem;
+  --ui-dimension-20: 1.25rem;
+  --ui-dimension-24: 1.5rem;
+  --ui-dimension-28: 1.75rem;
+  --ui-dimension-32: 2rem;
+  --ui-dimension-36: 2.25rem;
+  --ui-dimension-40: 2.5rem;
+  --ui-dimension-48: 3rem;
+  --ui-dimension-64: 4rem;
+  --ui-dimension-80: 5rem;
+  --ui-dimension-96: 6rem;
+  --ui-dimension-300: 18.75rem;
+  --ui-dimension-320: 20rem;
+  --ui-dimension-560: 35rem;
+  --ui-dimension-600: 37.5rem;
+  --ui-dimension-9999: 624.9375rem;
+  --ui-dimension-negative-1: -0.0625rem;
+  --ui-dimension-negative-2: -0.125rem;
+  --ui-dimension-negative-4: -0.25rem;
+  --ui-dimension-negative-6: -0.375rem;
+  --ui-dimension-negative-8: -0.5rem;
+  --ui-dimension-negative-10: -0.625rem;
+  --ui-dimension-negative-12: -0.75rem;
+  --ui-dimension-negative-16: -1rem;
+  --ui-dimension-negative-20: -1.25rem;
+  --ui-dimension-negative-24: -1.5rem;
+  --ui-dimension-negative-32: -2rem;
+  --ui-dimension-negative-36: -2.25rem;
+  --ui-dimension-negative-40: -2.5rem;
+  --ui-dimension-negative-48: -3rem;
+  --ui-dimension-negative-64: -3.9375rem;
+  --ui-dimension-negative-80: -5rem;
+  --ui-dimension-negative-9999: -624.9375rem;
+  --ui-weight-400: 400;
+  --ui-weight-600: 600;
+  --csstools-light-dark-toggle--85: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0);
+  --ui-shadow-default: var(--csstools-light-dark-toggle--85, rgba(0, 0, 0, 0.1));
+  --csstools-light-dark-toggle--86: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0);
+  --ui-shadow-muted: var(--csstools-light-dark-toggle--86, rgba(0, 0, 0, 0.05));
+  --ui-spacing-0: 0;
+  --ui-spacing-1: 0.0625rem;
+  --ui-spacing-2: 0.125rem;
+  --ui-spacing-4: 0.25rem;
+  --ui-spacing-6: 0.375rem;
+  --ui-spacing-8: 0.5rem;
+  --ui-spacing-10: 0.625rem;
+  --ui-spacing-12: 0.75rem;
+  --ui-spacing-16: 1rem;
+  --ui-spacing-20: 1.25rem;
+  --ui-spacing-24: 1.5rem;
+  --ui-spacing-32: 2rem;
+  --ui-spacing-36: 2.25rem;
+  --ui-spacing-40: 2.5rem;
+  --ui-spacing-80: 5rem;
+  --ui-spacing-96: 6rem;
+  --ui-spacing-300: 18.75rem;
+  --ui-spacing-320: 20rem;
+  --ui-spacing-560: 35rem;
+  --ui-spacing-600: 37.5rem;
+  --ui-spacing-negative-1: -0.0625rem;
+  --ui-spacing-negative-2: -0.125rem;
+  --ui-spacing-negative-4: -0.25rem;
+  --ui-spacing-negative-6: -0.375rem;
+  --ui-spacing-negative-8: -0.5rem;
+  --ui-spacing-negative-10: -0.625rem;
+  --ui-spacing-negative-12: -0.75rem;
+  --ui-spacing-negative-16: -1rem;
+  --ui-spacing-negative-20: -1.25rem;
+  --ui-spacing-negative-24: -1.5rem;
+  --ui-spacing-negative-32: -2rem;
+  --ui-spacing-negative-36: -2.25rem;
+  --ui-spacing-negative-40: -2.5rem;
+  --ui-spacing-negative-80: -5rem;
+  --ui-border-width-1: 0.0625rem;
+  --ui-border-width-2: 0.125rem;
+  --ui-border-radius-0: 0;
+  --ui-border-radius-2: 0.125rem;
+  --ui-border-radius-4: 0.25rem;
+  --ui-border-radius-6: 0.375rem;
+  --ui-border-radius-8: 0.5rem;
+  --ui-border-radius-12: 0.75rem;
+  --ui-border-radius-16: 1rem;
+  --ui-border-radius-full: 624.9375rem;
+  --ui-typography-font-size-8: 0.5rem;
+  --ui-typography-font-size-12: 0.75rem;
+  --ui-typography-font-size-14: 0.875rem;
+  --ui-typography-font-size-16: 1rem;
+  --ui-typography-font-size-20: 1.25rem;
+  --ui-typography-font-size-24: 1.5rem;
+  --ui-typography-font-size-32: 2rem;
+  --ui-typography-font-weight-400: 400;
+  --ui-typography-font-weight-600: 600;
+  --ui-typography-line-height-12: 0.75rem;
+  --ui-typography-line-height-16: 1rem;
+  --ui-typography-line-height-20: 1.25rem;
+  --ui-typography-line-height-24: 1.5rem;
+  --ui-typography-line-height-28: 1.75rem;
+  --ui-typography-line-height-32: 2rem;
+  --ui-typography-line-height-36: 2.25rem;
+  --csstools-light-dark-toggle--87: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.1);
+  --ui-drop-shadow-small-layer-0-color: var(--csstools-light-dark-toggle--87, rgba(0, 0, 0, 0.1));
+  --ui-drop-shadow-small-layer-0-offset-x: 0;
+  --ui-drop-shadow-small-layer-0-offset-y: 0.0625rem;
+  --ui-drop-shadow-small-layer-0-blur: 0.25rem;
+  --ui-drop-shadow-small-layer-0-spread: 0;
+  --csstools-light-dark-toggle--88: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.1);
+  --ui-drop-shadow-default-layer-0-color: var(--csstools-light-dark-toggle--88, rgba(0, 0, 0, 0.1));
+  --ui-drop-shadow-default-layer-0-offset-x: 0;
+  --ui-drop-shadow-default-layer-0-offset-y: 0.125rem;
+  --ui-drop-shadow-default-layer-0-blur: 0.5rem;
+  --ui-drop-shadow-default-layer-0-spread: 0;
+  --csstools-light-dark-toggle--89: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.05);
+  --ui-drop-shadow-default-layer-1-color: var(--csstools-light-dark-toggle--89, rgba(0, 0, 0, 0.05));
+  --ui-drop-shadow-default-layer-1-offset-x: 0;
+  --ui-drop-shadow-default-layer-1-offset-y: 0.125rem;
+  --ui-drop-shadow-default-layer-1-blur: 1rem;
+  --ui-drop-shadow-default-layer-1-spread: 0.0625rem;
+  --csstools-light-dark-toggle--90: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.1);
+  --ui-drop-shadow-large-layer-0-color: var(--csstools-light-dark-toggle--90, rgba(0, 0, 0, 0.1));
+  --ui-drop-shadow-large-layer-0-offset-x: 0;
+  --ui-drop-shadow-large-layer-0-offset-y: 0.25rem;
+  --ui-drop-shadow-large-layer-0-blur: 1rem;
+  --ui-drop-shadow-large-layer-0-spread: 0;
+  --csstools-light-dark-toggle--91: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.05);
+  --ui-drop-shadow-large-layer-1-color: var(--csstools-light-dark-toggle--91, rgba(0, 0, 0, 0.05));
+  --ui-drop-shadow-large-layer-1-offset-x: 0;
+  --ui-drop-shadow-large-layer-1-offset-y: 0.5rem;
+  --ui-drop-shadow-large-layer-1-blur: 2rem;
+  --ui-drop-shadow-large-layer-1-spread: 0.0625rem;
+  --ui-color-opacity-light-0-hex: #000000;
+  --ui-color-opacity-light-3-hex: #000000;
+  --ui-color-opacity-light-5-hex: #000000;
+  --ui-color-opacity-light-10-hex: #000000;
+  --ui-color-opacity-light-15-hex: #000000;
+  --ui-color-opacity-light-25-hex: #000000;
+  --ui-color-opacity-light-35-hex: #000000;
+  --ui-color-opacity-light-50-hex: #000000;
+  --ui-color-opacity-dark-25-hex: #ffffff;
+  --ui-color-opacity-dark-35-hex: #ffffff;
+  --ui-color-opacity-debug-25-hex: #6d5cd8;
+  --ui-color-opacity-debug-100-hex: #6d5cd8;
+  --ui-color-blue-50-hex: #e0f0ff;
+  --ui-color-blue-100-hex: #cfe7ff;
+  --ui-color-blue-200-hex: #97caff;
+  --ui-color-blue-300-hex: #60afff;
+  --ui-color-blue-400-hex: #2e91ec;
+  --ui-color-blue-500-hex: #0070c9;
+  --ui-color-blue-600-hex: #0053a9;
+  --ui-color-blue-700-hex: #00388d;
+  --ui-color-blue-800-hex: #001f73;
+  --ui-color-blue-900-hex: #000560;
+  --ui-color-purple-50-hex: #f4f4ff;
+  --ui-color-purple-100-hex: #e3e3ff;
+  --ui-color-purple-200-hex: #c3c0ff;
+  --ui-color-purple-300-hex: #a99fff;
+  --ui-color-purple-400-hex: #8b7bff;
+  --ui-color-purple-500-hex: #6d5cd8;
+  --ui-color-purple-600-hex: #5444ac;
+  --ui-color-purple-700-hex: #3d3182;
+  --ui-color-purple-800-hex: #281f5b;
+  --ui-color-purple-900-hex: #18123d;
+  --ui-color-green-50-hex: #defdee;
+  --ui-color-green-100-hex: #9cf7d1;
+  --ui-color-green-200-hex: #43dea9;
+  --ui-color-green-300-hex: #00c28f;
+  --ui-color-green-400-hex: #00a174;
+  --ui-color-green-500-hex: #007f59;
+  --ui-color-green-600-hex: #006143;
+  --ui-color-green-700-hex: #004730;
+  --ui-color-green-800-hex: #00301f;
+  --ui-color-green-900-hex: #001e12;
+  --ui-color-red-50-hex: #ffe9e5;
+  --ui-color-red-100-hex: #ffddd8;
+  --ui-color-red-200-hex: #ffb2a7;
+  --ui-color-red-300-hex: #ff8978;
+  --ui-color-red-400-hex: #f9553e;
+  --ui-color-red-500-hex: #c34331;
+  --ui-color-red-600-hex: #963326;
+  --ui-color-red-700-hex: #6f261c;
+  --ui-color-red-800-hex: #4a1913;
+  --ui-color-red-900-hex: #2d100b;
+  --ui-color-yellow-50-hex: #fff6c5;
+  --ui-color-yellow-100-hex: #ffe55e;
+  --ui-color-yellow-200-hex: #e8c300;
+  --ui-color-yellow-300-hex: #c9a800;
+  --ui-color-yellow-400-hex: #a78c00;
+  --ui-color-yellow-500-hex: #826e00;
+  --ui-color-yellow-600-hex: #645400;
+  --ui-color-yellow-700-hex: #493d00;
+  --ui-color-yellow-800-hex: #302900;
+  --ui-color-yellow-900-hex: #1e1900;
+  --ui-color-gray-0-hex: #fafafa;
+  --ui-color-gray-50-hex: #f5f5f5;
+  --ui-color-gray-100-hex: #e5e5e5;
+  --ui-color-gray-200-hex: #c6c6c6;
+  --ui-color-gray-300-hex: #ababab;
+  --ui-color-gray-400-hex: #8e8e8e;
+  --ui-color-gray-500-hex: #6f6f6f;
+  --ui-color-gray-600-hex: #555555;
+  --ui-color-gray-700-hex: #3e3e3e;
+  --ui-color-gray-800-hex: #292929;
+  --ui-color-gray-900-hex: #191919;
+  --ui-color-white-hex: #ffffff;
+  --ui-color-black-hex: #000000;
+  --ui-color-brand-hex: #0f2b46;
+  --ui-color-transparent-hex: #ffffff;
+  --ui-color-background-app-hex: #ffffff;
+  --ui-color-background-surface-hex: #ffffff;
+  --ui-color-background-surface-invert-hex: #292929;
+  --ui-color-background-surface-canvas-hex: #ffffff;
+  --ui-color-background-surface-canvas-secondary-hex: #f5f5f5;
+  --ui-color-background-surface-neutral-hex: #c6c6c6;
+  --ui-color-background-surface-neutral-hover-hex: #ababab;
+  --ui-color-background-surface-neutral-pressed-hex: #8e8e8e;
+  --ui-color-background-surface-neutral-muted-hex: #e5e5e5;
+  --ui-color-background-surface-neutral-muted-hover-hex: #c6c6c6;
+  --ui-color-background-surface-neutral-muted-pressed-hex: #ababab;
+  --ui-color-background-surface-info-hex: #0070c9;
+  --ui-color-background-surface-info-muted-hex: #e0f0ff;
+  --ui-color-background-surface-success-hex: #007f59;
+  --ui-color-background-surface-success-muted-hex: #defdee;
+  --ui-color-background-surface-warning-hex: #c9a800;
+  --ui-color-background-surface-warning-muted-hex: #fff6c5;
+  --ui-color-background-surface-danger-hex: #c34331;
+  --ui-color-background-surface-danger-muted-hex: #ffe9e5;
+  --ui-color-background-surface-primary-hex: #0070c9;
+  --ui-color-background-surface-primary-muted-hex: #e0f0ff;
+  --ui-color-background-action-hex: #ffffff;
+  --ui-color-background-action-active-hex: #e0f0ff;
+  --ui-color-background-action-active-alternative-hex: #f4f4ff;
+  --ui-color-background-action-brand-hex: #0f2b46;
+  --ui-color-background-action-basic-hex: #ffffff;
+  --ui-color-background-action-basic-hover-hex: #f5f5f5;
+  --ui-color-background-action-basic-pressed-hex: #e5e5e5;
+  --ui-color-background-action-ghost-hex: #ffffff;
+  --ui-color-background-action-ghost-hover-hex: #000000;
+  --ui-color-background-action-ghost-pressed-hex: #000000;
+  --ui-color-background-action-disabled-hex: #000000;
+  --ui-color-background-action-primary-hex: #0070c9;
+  --ui-color-background-action-primary-hover-hex: #0053a9;
+  --ui-color-background-action-primary-pressed-hex: #00388d;
+  --ui-color-background-action-danger-hex: #c34331;
+  --ui-color-background-action-danger-hover-hex: #963326;
+  --ui-color-background-action-danger-pressed-hex: #6f261c;
+  --ui-color-background-overlay-hex: #000000;
+  --ui-color-text-default-hex: #292929;
+  --ui-color-text-default-invert-hex: #f5f5f5;
+  --ui-color-text-muted-hex: #6f6f6f;
+  --ui-color-text-info-hex: #00388d;
+  --ui-color-text-success-hex: #004730;
+  --ui-color-text-warning-hex: #493d00;
+  --ui-color-text-danger-hex: #6f261c;
+  --ui-color-text-info-muted-hex: #0070c9;
+  --ui-color-text-success-muted-hex: #007f59;
+  --ui-color-text-warning-muted-hex: #826e00;
+  --ui-color-text-danger-muted-hex: #c34331;
+  --ui-color-text-action-hex: #292929;
+  --ui-color-text-action-invert-hex: #f5f5f5;
+  --ui-color-text-action-active-hex: #0053a9;
+  --ui-color-text-action-active-alternative-hex: #5444ac;
+  --ui-color-text-action-basic-hex: #292929;
+  --ui-color-text-action-ghost-hex: #292929;
+  --ui-color-text-action-primary-hex: #e0f0ff;
+  --ui-color-text-action-danger-hex: #ffe9e5;
+  --ui-color-text-action-disabled-hex: #000000;
+  --ui-color-text-link-hex: #0070c9;
+  --ui-color-text-link-hover-hex: #0053a9;
+  --ui-color-text-link-pressed-hex: #00388d;
+  --ui-color-text-link-disabled-hex: #000000;
+  --ui-color-text-white-hex: #ffffff;
+  --ui-color-text-black-hex: #000000;
+  --ui-color-text-brand-hex: #0f2b46;
+  --ui-color-border-default-hex: #e5e5e5;
+  --ui-color-border-default-invert-hex: #292929;
+  --ui-color-border-action-basic-default-hex: #e5e5e5;
+  --ui-color-border-action-basic-active-hex: #e0f0ff;
+  --ui-color-border-action-basic-hover-hex: #c6c6c6;
+  --ui-color-border-action-basic-pressed-hex: #ababab;
+  --ui-color-border-action-disabled-hex: #000000;
+  --ui-color-border-action-active-hex: #0070c9;
+  --ui-color-border-action-active-alternative-hex: #6d5cd8;
+  --ui-color-border-action-secondary-default-hex: #ababab;
+  --ui-color-border-action-secondary-hover-hex: #8e8e8e;
+  --ui-color-border-action-danger-hex: #c34331;
+  --ui-color-border-action-success-hex: #007f59;
+  --ui-color-border-surface-info-hex: #0070c9;
+  --ui-color-border-surface-success-hex: #007f59;
+  --ui-color-border-surface-warning-hex: #826e00;
+  --ui-color-border-surface-danger-hex: #c34331;
+  --ui-color-border-focus-hex: #0070c9;
+  --ui-color-border-debug-hex: #ffffff;
+  --ui-color-opacity-light-0-rgb-x: 0 0 0;
+  --ui-color-opacity-light-3-rgb-x: 0 0 0;
+  --ui-color-opacity-light-5-rgb-x: 0 0 0;
+  --ui-color-opacity-light-10-rgb-x: 0 0 0;
+  --ui-color-opacity-light-15-rgb-x: 0 0 0;
+  --ui-color-opacity-light-25-rgb-x: 0 0 0;
+  --ui-color-opacity-light-35-rgb-x: 0 0 0;
+  --ui-color-opacity-light-50-rgb-x: 0 0 0;
+  --ui-color-opacity-dark-25-rgb-x: 255 255 255;
+  --ui-color-opacity-dark-35-rgb-x: 255 255 255;
+  --ui-color-opacity-debug-25-rgb-x: 109 92 216;
+  --ui-color-opacity-debug-100-rgb-x: 109 92 216;
+  --ui-color-blue-50-rgb-x: 224 240 255;
+  --ui-color-blue-100-rgb-x: 207 231 255;
+  --ui-color-blue-200-rgb-x: 151 202 255;
+  --ui-color-blue-300-rgb-x: 96 175 255;
+  --ui-color-blue-400-rgb-x: 46 145 236;
+  --ui-color-blue-500-rgb-x: 0 112 201;
+  --ui-color-blue-600-rgb-x: 0 83 169;
+  --ui-color-blue-700-rgb-x: 0 56 141;
+  --ui-color-blue-800-rgb-x: 0 31 115;
+  --ui-color-blue-900-rgb-x: 0 5 96;
+  --ui-color-purple-50-rgb-x: 244 244 255;
+  --ui-color-purple-100-rgb-x: 227 227 255;
+  --ui-color-purple-200-rgb-x: 195 192 255;
+  --ui-color-purple-300-rgb-x: 169 159 255;
+  --ui-color-purple-400-rgb-x: 139 123 255;
+  --ui-color-purple-500-rgb-x: 109 92 216;
+  --ui-color-purple-600-rgb-x: 84 68 172;
+  --ui-color-purple-700-rgb-x: 61 49 130;
+  --ui-color-purple-800-rgb-x: 40 31 91;
+  --ui-color-purple-900-rgb-x: 24 18 61;
+  --ui-color-green-50-rgb-x: 222 253 238;
+  --ui-color-green-100-rgb-x: 156 247 209;
+  --ui-color-green-200-rgb-x: 67 222 169;
+  --ui-color-green-300-rgb-x: 0 194 143;
+  --ui-color-green-400-rgb-x: 0 161 116;
+  --ui-color-green-500-rgb-x: 0 127 89;
+  --ui-color-green-600-rgb-x: 0 97 67;
+  --ui-color-green-700-rgb-x: 0 71 48;
+  --ui-color-green-800-rgb-x: 0 48 31;
+  --ui-color-green-900-rgb-x: 0 30 18;
+  --ui-color-red-50-rgb-x: 255 233 229;
+  --ui-color-red-100-rgb-x: 255 221 216;
+  --ui-color-red-200-rgb-x: 255 178 167;
+  --ui-color-red-300-rgb-x: 255 137 120;
+  --ui-color-red-400-rgb-x: 249 85 62;
+  --ui-color-red-500-rgb-x: 195 67 49;
+  --ui-color-red-600-rgb-x: 150 51 38;
+  --ui-color-red-700-rgb-x: 111 38 28;
+  --ui-color-red-800-rgb-x: 74 25 19;
+  --ui-color-red-900-rgb-x: 45 16 11;
+  --ui-color-yellow-50-rgb-x: 255 246 197;
+  --ui-color-yellow-100-rgb-x: 255 229 94;
+  --ui-color-yellow-200-rgb-x: 232 195 0;
+  --ui-color-yellow-300-rgb-x: 201 168 0;
+  --ui-color-yellow-400-rgb-x: 167 140 0;
+  --ui-color-yellow-500-rgb-x: 130 110 0;
+  --ui-color-yellow-600-rgb-x: 100 84 0;
+  --ui-color-yellow-700-rgb-x: 73 61 0;
+  --ui-color-yellow-800-rgb-x: 48 41 0;
+  --ui-color-yellow-900-rgb-x: 30 25 0;
+  --ui-color-gray-0-rgb-x: 250 250 250;
+  --ui-color-gray-50-rgb-x: 245 245 245;
+  --ui-color-gray-100-rgb-x: 229 229 229;
+  --ui-color-gray-200-rgb-x: 198 198 198;
+  --ui-color-gray-300-rgb-x: 171 171 171;
+  --ui-color-gray-400-rgb-x: 142 142 142;
+  --ui-color-gray-500-rgb-x: 111 111 111;
+  --ui-color-gray-600-rgb-x: 85 85 85;
+  --ui-color-gray-700-rgb-x: 62 62 62;
+  --ui-color-gray-800-rgb-x: 41 41 41;
+  --ui-color-gray-900-rgb-x: 25 25 25;
+  --ui-color-white-rgb-x: 255 255 255;
+  --ui-color-black-rgb-x: 0 0 0;
+  --ui-color-brand-rgb-x: 15 43 70;
+  --ui-color-transparent-rgb-x: 255 255 255;
+  --ui-color-background-app-rgb-x: 255 255 255;
+  --ui-color-background-surface-rgb-x: 255 255 255;
+  --ui-color-background-surface-invert-rgb-x: 41 41 41;
+  --ui-color-background-surface-canvas-rgb-x: 255 255 255;
+  --ui-color-background-surface-canvas-secondary-rgb-x: 245 245 245;
+  --ui-color-background-surface-neutral-rgb-x: 198 198 198;
+  --ui-color-background-surface-neutral-hover-rgb-x: 171 171 171;
+  --ui-color-background-surface-neutral-pressed-rgb-x: 142 142 142;
+  --ui-color-background-surface-neutral-muted-rgb-x: 229 229 229;
+  --ui-color-background-surface-neutral-muted-hover-rgb-x: 198 198 198;
+  --ui-color-background-surface-neutral-muted-pressed-rgb-x: 171 171 171;
+  --ui-color-background-surface-info-rgb-x: 0 112 201;
+  --ui-color-background-surface-info-muted-rgb-x: 224 240 255;
+  --ui-color-background-surface-success-rgb-x: 0 127 89;
+  --ui-color-background-surface-success-muted-rgb-x: 222 253 238;
+  --ui-color-background-surface-warning-rgb-x: 201 168 0;
+  --ui-color-background-surface-warning-muted-rgb-x: 255 246 197;
+  --ui-color-background-surface-danger-rgb-x: 195 67 49;
+  --ui-color-background-surface-danger-muted-rgb-x: 255 233 229;
+  --ui-color-background-surface-primary-rgb-x: 0 112 201;
+  --ui-color-background-surface-primary-muted-rgb-x: 224 240 255;
+  --ui-color-background-action-rgb-x: 255 255 255;
+  --ui-color-background-action-active-rgb-x: 224 240 255;
+  --ui-color-background-action-active-alternative-rgb-x: 244 244 255;
+  --ui-color-background-action-brand-rgb-x: 15 43 70;
+  --ui-color-background-action-basic-rgb-x: 255 255 255;
+  --ui-color-background-action-basic-hover-rgb-x: 245 245 245;
+  --ui-color-background-action-basic-pressed-rgb-x: 229 229 229;
+  --ui-color-background-action-ghost-rgb-x: 255 255 255;
+  --ui-color-background-action-ghost-hover-rgb-x: 0 0 0;
+  --ui-color-background-action-ghost-pressed-rgb-x: 0 0 0;
+  --ui-color-background-action-disabled-rgb-x: 0 0 0;
+  --ui-color-background-action-primary-rgb-x: 0 112 201;
+  --ui-color-background-action-primary-hover-rgb-x: 0 83 169;
+  --ui-color-background-action-primary-pressed-rgb-x: 0 56 141;
+  --ui-color-background-action-danger-rgb-x: 195 67 49;
+  --ui-color-background-action-danger-hover-rgb-x: 150 51 38;
+  --ui-color-background-action-danger-pressed-rgb-x: 111 38 28;
+  --ui-color-background-overlay-rgb-x: 0 0 0;
+  --ui-color-text-default-rgb-x: 41 41 41;
+  --ui-color-text-default-invert-rgb-x: 245 245 245;
+  --ui-color-text-muted-rgb-x: 111 111 111;
+  --ui-color-text-info-rgb-x: 0 56 141;
+  --ui-color-text-success-rgb-x: 0 71 48;
+  --ui-color-text-warning-rgb-x: 73 61 0;
+  --ui-color-text-danger-rgb-x: 111 38 28;
+  --ui-color-text-info-muted-rgb-x: 0 112 201;
+  --ui-color-text-success-muted-rgb-x: 0 127 89;
+  --ui-color-text-warning-muted-rgb-x: 130 110 0;
+  --ui-color-text-danger-muted-rgb-x: 195 67 49;
+  --ui-color-text-action-rgb-x: 41 41 41;
+  --ui-color-text-action-invert-rgb-x: 245 245 245;
+  --ui-color-text-action-active-rgb-x: 0 83 169;
+  --ui-color-text-action-active-alternative-rgb-x: 84 68 172;
+  --ui-color-text-action-basic-rgb-x: 41 41 41;
+  --ui-color-text-action-ghost-rgb-x: 41 41 41;
+  --ui-color-text-action-primary-rgb-x: 224 240 255;
+  --ui-color-text-action-danger-rgb-x: 255 233 229;
+  --ui-color-text-action-disabled-rgb-x: 0 0 0;
+  --ui-color-text-link-rgb-x: 0 112 201;
+  --ui-color-text-link-hover-rgb-x: 0 83 169;
+  --ui-color-text-link-pressed-rgb-x: 0 56 141;
+  --ui-color-text-link-disabled-rgb-x: 0 0 0;
+  --ui-color-text-white-rgb-x: 255 255 255;
+  --ui-color-text-black-rgb-x: 0 0 0;
+  --ui-color-text-brand-rgb-x: 15 43 70;
+  --ui-color-border-default-rgb-x: 229 229 229;
+  --ui-color-border-default-invert-rgb-x: 41 41 41;
+  --ui-color-border-action-basic-default-rgb-x: 229 229 229;
+  --ui-color-border-action-basic-active-rgb-x: 224 240 255;
+  --ui-color-border-action-basic-hover-rgb-x: 198 198 198;
+  --ui-color-border-action-basic-pressed-rgb-x: 171 171 171;
+  --ui-color-border-action-disabled-rgb-x: 0 0 0;
+  --ui-color-border-action-active-rgb-x: 0 112 201;
+  --ui-color-border-action-active-alternative-rgb-x: 109 92 216;
+  --ui-color-border-action-secondary-default-rgb-x: 171 171 171;
+  --ui-color-border-action-secondary-hover-rgb-x: 142 142 142;
+  --ui-color-border-action-danger-rgb-x: 195 67 49;
+  --ui-color-border-action-success-rgb-x: 0 127 89;
+  --ui-color-border-surface-info-rgb-x: 0 112 201;
+  --ui-color-border-surface-success-rgb-x: 0 127 89;
+  --ui-color-border-surface-warning-rgb-x: 130 110 0;
+  --ui-color-border-surface-danger-rgb-x: 195 67 49;
+  --ui-color-border-focus-rgb-x: 0 112 201;
+  --ui-color-border-debug-rgb-x: 255 255 255;
+  @supports not (color: light-dark(tan, tan)) {
+		& * {
+  --csstools-light-dark-toggle--0: var(--csstools-color-scheme--light) rgb(25, 25, 25);
+  --ui-color-background-app: var(--csstools-light-dark-toggle--0, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--1: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-background-surface: var(--csstools-light-dark-toggle--1, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--2: var(--csstools-color-scheme--light) rgb(255, 255, 255);
+  --ui-color-background-surface-invert: var(--csstools-light-dark-toggle--2, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--3: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-background-surface-canvas: var(--csstools-light-dark-toggle--3, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--4: var(--csstools-color-scheme--light) rgb(25, 25, 25);
+  --ui-color-background-surface-canvas-secondary: var(--csstools-light-dark-toggle--4, rgb(245, 245, 245));
+  --csstools-light-dark-toggle--5: var(--csstools-color-scheme--light) rgb(111, 111, 111);
+  --ui-color-background-surface-neutral: var(--csstools-light-dark-toggle--5, rgb(198, 198, 198));
+  --csstools-light-dark-toggle--6: var(--csstools-color-scheme--light) rgb(85, 85, 85);
+  --ui-color-background-surface-neutral-hover: var(--csstools-light-dark-toggle--6, rgb(171, 171, 171));
+  --csstools-light-dark-toggle--7: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-background-surface-neutral-pressed: var(--csstools-light-dark-toggle--7, rgb(142, 142, 142));
+  --csstools-light-dark-toggle--8: var(--csstools-color-scheme--light) rgb(85, 85, 85);
+  --ui-color-background-surface-neutral-muted: var(--csstools-light-dark-toggle--8, rgb(229, 229, 229));
+  --csstools-light-dark-toggle--9: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-background-surface-neutral-muted-hover: var(--csstools-light-dark-toggle--9, rgb(198, 198, 198));
+  --csstools-light-dark-toggle--10: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-background-surface-neutral-muted-pressed: var(--csstools-light-dark-toggle--10, rgb(171, 171, 171));
+  --csstools-light-dark-toggle--11: var(--csstools-color-scheme--light) rgb(151, 202, 255);
+  --ui-color-background-surface-info: var(--csstools-light-dark-toggle--11, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--12: var(--csstools-color-scheme--light) rgb(0, 56, 141);
+  --ui-color-background-surface-info-muted: var(--csstools-light-dark-toggle--12, rgb(224, 240, 255));
+  --csstools-light-dark-toggle--13: var(--csstools-color-scheme--light) rgb(67, 222, 169);
+  --ui-color-background-surface-success: var(--csstools-light-dark-toggle--13, rgb(0, 127, 89));
+  --csstools-light-dark-toggle--14: var(--csstools-color-scheme--light) rgb(0, 71, 48);
+  --ui-color-background-surface-success-muted: var(--csstools-light-dark-toggle--14, rgb(222, 253, 238));
+  --csstools-light-dark-toggle--15: var(--csstools-color-scheme--light) rgb(232, 195, 0);
+  --ui-color-background-surface-warning: var(--csstools-light-dark-toggle--15, rgb(201, 168, 0));
+  --csstools-light-dark-toggle--16: var(--csstools-color-scheme--light) rgb(130, 110, 0);
+  --ui-color-background-surface-warning-muted: var(--csstools-light-dark-toggle--16, rgb(255, 246, 197));
+  --csstools-light-dark-toggle--17: var(--csstools-color-scheme--light) rgb(255, 178, 167);
+  --ui-color-background-surface-danger: var(--csstools-light-dark-toggle--17, rgb(195, 67, 49));
+  --csstools-light-dark-toggle--18: var(--csstools-color-scheme--light) rgb(111, 38, 28);
+  --ui-color-background-surface-danger-muted: var(--csstools-light-dark-toggle--18, rgb(255, 233, 229));
+  --csstools-light-dark-toggle--19: var(--csstools-color-scheme--light) rgb(96, 175, 255);
+  --ui-color-background-surface-primary: var(--csstools-light-dark-toggle--19, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--20: var(--csstools-color-scheme--light) rgb(0, 56, 141);
+  --ui-color-background-surface-primary-muted: var(--csstools-light-dark-toggle--20, rgb(224, 240, 255));
+  --csstools-light-dark-toggle--21: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-background-action: var(--csstools-light-dark-toggle--21, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--22: var(--csstools-color-scheme--light) rgb(0, 56, 141);
+  --ui-color-background-action-active: var(--csstools-light-dark-toggle--22, rgb(224, 240, 255));
+  --csstools-light-dark-toggle--23: var(--csstools-color-scheme--light) rgb(61, 49, 130);
+  --ui-color-background-action-active-alternative: var(--csstools-light-dark-toggle--23, rgb(244, 244, 255));
+  --csstools-light-dark-toggle--24: var(--csstools-color-scheme--light) rgb(255, 255, 255);
+  --ui-color-background-action-brand: var(--csstools-light-dark-toggle--24, rgb(15, 43, 70));
+  --csstools-light-dark-toggle--25: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-background-action-basic: var(--csstools-light-dark-toggle--25, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--26: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-background-action-basic-hover: var(--csstools-light-dark-toggle--26, rgb(245, 245, 245));
+  --csstools-light-dark-toggle--27: var(--csstools-color-scheme--light) rgb(25, 25, 25);
+  --ui-color-background-action-basic-pressed: var(--csstools-light-dark-toggle--27, rgb(229, 229, 229));
+  --csstools-light-dark-toggle--28: var(--csstools-color-scheme--light) rgba(255, 255, 255, 0);
+  --ui-color-background-action-ghost: var(--csstools-light-dark-toggle--28, rgba(255, 255, 255, 0));
+  --csstools-light-dark-toggle--29: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.15);
+  --ui-color-background-action-ghost-hover: var(--csstools-light-dark-toggle--29, rgba(0, 0, 0, 0.05));
+  --csstools-light-dark-toggle--30: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.25);
+  --ui-color-background-action-ghost-pressed: var(--csstools-light-dark-toggle--30, rgba(0, 0, 0, 0.1));
+  --csstools-light-dark-toggle--31: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.15);
+  --ui-color-background-action-disabled: var(--csstools-light-dark-toggle--31, rgba(0, 0, 0, 0.03));
+  --csstools-light-dark-toggle--32: var(--csstools-color-scheme--light) rgb(0, 112, 201);
+  --ui-color-background-action-primary: var(--csstools-light-dark-toggle--32, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--33: var(--csstools-color-scheme--light) rgb(0, 83, 169);
+  --ui-color-background-action-primary-hover: var(--csstools-light-dark-toggle--33, rgb(0, 83, 169));
+  --csstools-light-dark-toggle--34: var(--csstools-color-scheme--light) rgb(0, 56, 141);
+  --ui-color-background-action-primary-pressed: var(--csstools-light-dark-toggle--34, rgb(0, 56, 141));
+  --csstools-light-dark-toggle--35: var(--csstools-color-scheme--light) rgb(195, 67, 49);
+  --ui-color-background-action-danger: var(--csstools-light-dark-toggle--35, rgb(195, 67, 49));
+  --csstools-light-dark-toggle--36: var(--csstools-color-scheme--light) rgb(150, 51, 38);
+  --ui-color-background-action-danger-hover: var(--csstools-light-dark-toggle--36, rgb(150, 51, 38));
+  --csstools-light-dark-toggle--37: var(--csstools-color-scheme--light) rgb(111, 38, 28);
+  --ui-color-background-action-danger-pressed: var(--csstools-light-dark-toggle--37, rgb(111, 38, 28));
+  --csstools-light-dark-toggle--38: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.5);
+  --ui-color-background-overlay: var(--csstools-light-dark-toggle--38, rgba(0, 0, 0, 0.5));
+  --csstools-light-dark-toggle--39: var(--csstools-color-scheme--light) rgb(245, 245, 245);
+  --ui-color-text-default: var(--csstools-light-dark-toggle--39, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--40: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-text-default-invert: var(--csstools-light-dark-toggle--40, rgb(245, 245, 245));
+  --csstools-light-dark-toggle--41: var(--csstools-color-scheme--light) rgb(171, 171, 171);
+  --ui-color-text-muted: var(--csstools-light-dark-toggle--41, rgb(111, 111, 111));
+  --csstools-light-dark-toggle--42: var(--csstools-color-scheme--light) rgb(224, 240, 255);
+  --ui-color-text-info: var(--csstools-light-dark-toggle--42, rgb(0, 56, 141));
+  --csstools-light-dark-toggle--43: var(--csstools-color-scheme--light) rgb(222, 253, 238);
+  --ui-color-text-success: var(--csstools-light-dark-toggle--43, rgb(0, 71, 48));
+  --csstools-light-dark-toggle--44: var(--csstools-color-scheme--light) rgb(255, 246, 197);
+  --ui-color-text-warning: var(--csstools-light-dark-toggle--44, rgb(73, 61, 0));
+  --csstools-light-dark-toggle--45: var(--csstools-color-scheme--light) rgb(255, 233, 229);
+  --ui-color-text-danger: var(--csstools-light-dark-toggle--45, rgb(111, 38, 28));
+  --csstools-light-dark-toggle--46: var(--csstools-color-scheme--light) rgb(96, 175, 255);
+  --ui-color-text-info-muted: var(--csstools-light-dark-toggle--46, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--47: var(--csstools-color-scheme--light) rgb(0, 194, 143);
+  --ui-color-text-success-muted: var(--csstools-light-dark-toggle--47, rgb(0, 127, 89));
+  --csstools-light-dark-toggle--48: var(--csstools-color-scheme--light) rgb(201, 168, 0);
+  --ui-color-text-warning-muted: var(--csstools-light-dark-toggle--48, rgb(130, 110, 0));
+  --csstools-light-dark-toggle--49: var(--csstools-color-scheme--light) rgb(255, 137, 120);
+  --ui-color-text-danger-muted: var(--csstools-light-dark-toggle--49, rgb(195, 67, 49));
+  --csstools-light-dark-toggle--50: var(--csstools-color-scheme--light) rgb(245, 245, 245);
+  --ui-color-text-action: var(--csstools-light-dark-toggle--50, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--51: var(--csstools-color-scheme--light) rgb(41, 41, 41);
+  --ui-color-text-action-invert: var(--csstools-light-dark-toggle--51, rgb(245, 245, 245));
+  --csstools-light-dark-toggle--52: var(--csstools-color-scheme--light) rgb(224, 240, 255);
+  --ui-color-text-action-active: var(--csstools-light-dark-toggle--52, rgb(0, 83, 169));
+  --csstools-light-dark-toggle--53: var(--csstools-color-scheme--light) rgb(244, 244, 255);
+  --ui-color-text-action-active-alternative: var(--csstools-light-dark-toggle--53, rgb(84, 68, 172));
+  --csstools-light-dark-toggle--54: var(--csstools-color-scheme--light) rgb(245, 245, 245);
+  --ui-color-text-action-basic: var(--csstools-light-dark-toggle--54, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--55: var(--csstools-color-scheme--light) rgb(245, 245, 245);
+  --ui-color-text-action-ghost: var(--csstools-light-dark-toggle--55, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--56: var(--csstools-color-scheme--light) rgb(224, 240, 255);
+  --ui-color-text-action-primary: var(--csstools-light-dark-toggle--56, rgb(224, 240, 255));
+  --csstools-light-dark-toggle--57: var(--csstools-color-scheme--light) rgb(255, 233, 229);
+  --ui-color-text-action-danger: var(--csstools-light-dark-toggle--57, rgb(255, 233, 229));
+  --csstools-light-dark-toggle--58: var(--csstools-color-scheme--light) rgba(255, 255, 255, 0.25);
+  --ui-color-text-action-disabled: var(--csstools-light-dark-toggle--58, rgba(0, 0, 0, 0.25));
+  --csstools-light-dark-toggle--59: var(--csstools-color-scheme--light) rgb(224, 240, 255);
+  --ui-color-text-link: var(--csstools-light-dark-toggle--59, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--60: var(--csstools-color-scheme--light) rgb(207, 231, 255);
+  --ui-color-text-link-hover: var(--csstools-light-dark-toggle--60, rgb(0, 83, 169));
+  --csstools-light-dark-toggle--61: var(--csstools-color-scheme--light) rgb(151, 202, 255);
+  --ui-color-text-link-pressed: var(--csstools-light-dark-toggle--61, rgb(0, 56, 141));
+  --csstools-light-dark-toggle--62: var(--csstools-color-scheme--light) rgb(142, 142, 142);
+  --ui-color-text-link-disabled: var(--csstools-light-dark-toggle--62, rgba(0, 0, 0, 0.25));
+  --csstools-light-dark-toggle--63: var(--csstools-color-scheme--light) rgb(255, 255, 255);
+  --ui-color-text-white: var(--csstools-light-dark-toggle--63, rgb(255, 255, 255));
+  --csstools-light-dark-toggle--64: var(--csstools-color-scheme--light) rgb(0, 0, 0);
+  --ui-color-text-black: var(--csstools-light-dark-toggle--64, rgb(0, 0, 0));
+  --csstools-light-dark-toggle--65: var(--csstools-color-scheme--light) rgb(15, 43, 70);
+  --ui-color-text-brand: var(--csstools-light-dark-toggle--65, rgb(15, 43, 70));
+  --csstools-light-dark-toggle--66: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-border-default: var(--csstools-light-dark-toggle--66, rgb(229, 229, 229));
+  --csstools-light-dark-toggle--67: var(--csstools-color-scheme--light) rgb(245, 245, 245);
+  --ui-color-border-default-invert: var(--csstools-light-dark-toggle--67, rgb(41, 41, 41));
+  --csstools-light-dark-toggle--68: var(--csstools-color-scheme--light) rgb(85, 85, 85);
+  --ui-color-border-action-basic-default: var(--csstools-light-dark-toggle--68, rgb(229, 229, 229));
+  --csstools-light-dark-toggle--69: var(--csstools-color-scheme--light) rgb(0, 56, 141);
+  --ui-color-border-action-basic-active: var(--csstools-light-dark-toggle--69, rgb(224, 240, 255));
+  --csstools-light-dark-toggle--70: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-border-action-basic-hover: var(--csstools-light-dark-toggle--70, rgb(198, 198, 198));
+  --csstools-light-dark-toggle--71: var(--csstools-color-scheme--light) rgb(25, 25, 25);
+  --ui-color-border-action-basic-pressed: var(--csstools-light-dark-toggle--71, rgb(171, 171, 171));
+  --csstools-light-dark-toggle--72: var(--csstools-color-scheme--light) rgba(255, 255, 255, 0.25);
+  --ui-color-border-action-disabled: var(--csstools-light-dark-toggle--72, rgba(0, 0, 0, 0.25));
+  --csstools-light-dark-toggle--73: var(--csstools-color-scheme--light) rgb(0, 112, 201);
+  --ui-color-border-action-active: var(--csstools-light-dark-toggle--73, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--74: var(--csstools-color-scheme--light) rgb(109, 92, 216);
+  --ui-color-border-action-active-alternative: var(--csstools-light-dark-toggle--74, rgb(109, 92, 216));
+  --csstools-light-dark-toggle--75: var(--csstools-color-scheme--light) rgb(85, 85, 85);
+  --ui-color-border-action-secondary-default: var(--csstools-light-dark-toggle--75, rgb(171, 171, 171));
+  --csstools-light-dark-toggle--76: var(--csstools-color-scheme--light) rgb(62, 62, 62);
+  --ui-color-border-action-secondary-hover: var(--csstools-light-dark-toggle--76, rgb(142, 142, 142));
+  --csstools-light-dark-toggle--77: var(--csstools-color-scheme--light) rgb(195, 67, 49);
+  --ui-color-border-action-danger: var(--csstools-light-dark-toggle--77, rgb(195, 67, 49));
+  --csstools-light-dark-toggle--78: var(--csstools-color-scheme--light) rgb(0, 127, 89);
+  --ui-color-border-action-success: var(--csstools-light-dark-toggle--78, rgb(0, 127, 89));
+  --csstools-light-dark-toggle--79: var(--csstools-color-scheme--light) rgb(46, 145, 236);
+  --ui-color-border-surface-info: var(--csstools-light-dark-toggle--79, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--80: var(--csstools-color-scheme--light) rgb(0, 161, 116);
+  --ui-color-border-surface-success: var(--csstools-light-dark-toggle--80, rgb(0, 127, 89));
+  --csstools-light-dark-toggle--81: var(--csstools-color-scheme--light) rgb(167, 140, 0);
+  --ui-color-border-surface-warning: var(--csstools-light-dark-toggle--81, rgb(130, 110, 0));
+  --csstools-light-dark-toggle--82: var(--csstools-color-scheme--light) rgb(249, 85, 62);
+  --ui-color-border-surface-danger: var(--csstools-light-dark-toggle--82, rgb(195, 67, 49));
+  --csstools-light-dark-toggle--83: var(--csstools-color-scheme--light) rgb(255, 255, 255);
+  --ui-color-border-focus: var(--csstools-light-dark-toggle--83, rgb(0, 112, 201));
+  --csstools-light-dark-toggle--84: var(--csstools-color-scheme--light) rgba(255, 255, 255, 0);
+  --ui-color-border-debug: var(--csstools-light-dark-toggle--84, rgba(255, 255, 255, 0));
+  --csstools-light-dark-toggle--85: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0);
+  --ui-shadow-default: var(--csstools-light-dark-toggle--85, rgba(0, 0, 0, 0.1));
+  --csstools-light-dark-toggle--86: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0);
+  --ui-shadow-muted: var(--csstools-light-dark-toggle--86, rgba(0, 0, 0, 0.05));
+  --csstools-light-dark-toggle--87: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.1);
+  --ui-drop-shadow-small-layer-0-color: var(--csstools-light-dark-toggle--87, rgba(0, 0, 0, 0.1));
+  --csstools-light-dark-toggle--88: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.1);
+  --ui-drop-shadow-default-layer-0-color: var(--csstools-light-dark-toggle--88, rgba(0, 0, 0, 0.1));
+  --csstools-light-dark-toggle--89: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.05);
+  --ui-drop-shadow-default-layer-1-color: var(--csstools-light-dark-toggle--89, rgba(0, 0, 0, 0.05));
+  --csstools-light-dark-toggle--90: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.1);
+  --ui-drop-shadow-large-layer-0-color: var(--csstools-light-dark-toggle--90, rgba(0, 0, 0, 0.1));
+  --csstools-light-dark-toggle--91: var(--csstools-color-scheme--light) rgba(0, 0, 0, 0.05);
+  --ui-drop-shadow-large-layer-1-color: var(--csstools-light-dark-toggle--91, rgba(0, 0, 0, 0.05));
+		}
+	}
+}
+@supports (color: light-dark(red, red)) {
+:root {
+  --ui-color-background-app: light-dark(rgb(255, 255, 255), rgb(25, 25, 25));
+  --ui-color-background-surface: light-dark(rgb(255, 255, 255), rgb(41, 41, 41));
+  --ui-color-background-surface-invert: light-dark(rgb(41, 41, 41), rgb(255, 255, 255));
+  --ui-color-background-surface-canvas: light-dark(rgb(255, 255, 255), rgb(41, 41, 41));
+  --ui-color-background-surface-canvas-secondary: light-dark(rgb(245, 245, 245), rgb(25, 25, 25));
+  --ui-color-background-surface-neutral: light-dark(rgb(198, 198, 198), rgb(111, 111, 111));
+  --ui-color-background-surface-neutral-hover: light-dark(rgb(171, 171, 171), rgb(85, 85, 85));
+  --ui-color-background-surface-neutral-pressed: light-dark(rgb(142, 142, 142), rgb(62, 62, 62));
+  --ui-color-background-surface-neutral-muted: light-dark(rgb(229, 229, 229), rgb(85, 85, 85));
+  --ui-color-background-surface-neutral-muted-hover: light-dark(rgb(198, 198, 198), rgb(62, 62, 62));
+  --ui-color-background-surface-neutral-muted-pressed: light-dark(rgb(171, 171, 171), rgb(41, 41, 41));
+  --ui-color-background-surface-info: light-dark(rgb(0, 112, 201), rgb(151, 202, 255));
+  --ui-color-background-surface-info-muted: light-dark(rgb(224, 240, 255), rgb(0, 56, 141));
+  --ui-color-background-surface-success: light-dark(rgb(0, 127, 89), rgb(67, 222, 169));
+  --ui-color-background-surface-success-muted: light-dark(rgb(222, 253, 238), rgb(0, 71, 48));
+  --ui-color-background-surface-warning: light-dark(rgb(201, 168, 0), rgb(232, 195, 0));
+  --ui-color-background-surface-warning-muted: light-dark(rgb(255, 246, 197), rgb(130, 110, 0));
+  --ui-color-background-surface-danger: light-dark(rgb(195, 67, 49), rgb(255, 178, 167));
+  --ui-color-background-surface-danger-muted: light-dark(rgb(255, 233, 229), rgb(111, 38, 28));
+  --ui-color-background-surface-primary: light-dark(rgb(0, 112, 201), rgb(96, 175, 255));
+  --ui-color-background-surface-primary-muted: light-dark(rgb(224, 240, 255), rgb(0, 56, 141));
+  --ui-color-background-action: light-dark(rgb(255, 255, 255), rgb(41, 41, 41));
+  --ui-color-background-action-active: light-dark(rgb(224, 240, 255), rgb(0, 56, 141));
+  --ui-color-background-action-active-alternative: light-dark(rgb(244, 244, 255), rgb(61, 49, 130));
+  --ui-color-background-action-brand: light-dark(rgb(15, 43, 70), rgb(255, 255, 255));
+  --ui-color-background-action-basic: light-dark(rgb(255, 255, 255), rgb(41, 41, 41));
+  --ui-color-background-action-basic-hover: light-dark(rgb(245, 245, 245), rgb(62, 62, 62));
+  --ui-color-background-action-basic-pressed: light-dark(rgb(229, 229, 229), rgb(25, 25, 25));
+  --ui-color-background-action-ghost: light-dark(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0));
+  --ui-color-background-action-ghost-hover: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15));
+  --ui-color-background-action-ghost-pressed: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.25));
+  --ui-color-background-action-disabled: light-dark(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.15));
+  --ui-color-background-action-primary: light-dark(rgb(0, 112, 201), rgb(0, 112, 201));
+  --ui-color-background-action-primary-hover: light-dark(rgb(0, 83, 169), rgb(0, 83, 169));
+  --ui-color-background-action-primary-pressed: light-dark(rgb(0, 56, 141), rgb(0, 56, 141));
+  --ui-color-background-action-danger: light-dark(rgb(195, 67, 49), rgb(195, 67, 49));
+  --ui-color-background-action-danger-hover: light-dark(rgb(150, 51, 38), rgb(150, 51, 38));
+  --ui-color-background-action-danger-pressed: light-dark(rgb(111, 38, 28), rgb(111, 38, 28));
+  --ui-color-background-overlay: light-dark(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+  --ui-color-text-default: light-dark(rgb(41, 41, 41), rgb(245, 245, 245));
+  --ui-color-text-default-invert: light-dark(rgb(245, 245, 245), rgb(41, 41, 41));
+  --ui-color-text-muted: light-dark(rgb(111, 111, 111), rgb(171, 171, 171));
+  --ui-color-text-info: light-dark(rgb(0, 56, 141), rgb(224, 240, 255));
+  --ui-color-text-success: light-dark(rgb(0, 71, 48), rgb(222, 253, 238));
+  --ui-color-text-warning: light-dark(rgb(73, 61, 0), rgb(255, 246, 197));
+  --ui-color-text-danger: light-dark(rgb(111, 38, 28), rgb(255, 233, 229));
+  --ui-color-text-info-muted: light-dark(rgb(0, 112, 201), rgb(96, 175, 255));
+  --ui-color-text-success-muted: light-dark(rgb(0, 127, 89), rgb(0, 194, 143));
+  --ui-color-text-warning-muted: light-dark(rgb(130, 110, 0), rgb(201, 168, 0));
+  --ui-color-text-danger-muted: light-dark(rgb(195, 67, 49), rgb(255, 137, 120));
+  --ui-color-text-action: light-dark(rgb(41, 41, 41), rgb(245, 245, 245));
+  --ui-color-text-action-invert: light-dark(rgb(245, 245, 245), rgb(41, 41, 41));
+  --ui-color-text-action-active: light-dark(rgb(0, 83, 169), rgb(224, 240, 255));
+  --ui-color-text-action-active-alternative: light-dark(rgb(84, 68, 172), rgb(244, 244, 255));
+  --ui-color-text-action-basic: light-dark(rgb(41, 41, 41), rgb(245, 245, 245));
+  --ui-color-text-action-ghost: light-dark(rgb(41, 41, 41), rgb(245, 245, 245));
+  --ui-color-text-action-primary: light-dark(rgb(224, 240, 255), rgb(224, 240, 255));
+  --ui-color-text-action-danger: light-dark(rgb(255, 233, 229), rgb(255, 233, 229));
+  --ui-color-text-action-disabled: light-dark(rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.25));
+  --ui-color-text-link: light-dark(rgb(0, 112, 201), rgb(224, 240, 255));
+  --ui-color-text-link-hover: light-dark(rgb(0, 83, 169), rgb(207, 231, 255));
+  --ui-color-text-link-pressed: light-dark(rgb(0, 56, 141), rgb(151, 202, 255));
+  --ui-color-text-link-disabled: light-dark(rgba(0, 0, 0, 0.25), rgb(142, 142, 142));
+  --ui-color-text-white: light-dark(rgb(255, 255, 255), rgb(255, 255, 255));
+  --ui-color-text-black: light-dark(rgb(0, 0, 0), rgb(0, 0, 0));
+  --ui-color-text-brand: light-dark(rgb(15, 43, 70), rgb(15, 43, 70));
+  --ui-color-border-default: light-dark(rgb(229, 229, 229), rgb(62, 62, 62));
+  --ui-color-border-default-invert: light-dark(rgb(41, 41, 41), rgb(245, 245, 245));
+  --ui-color-border-action-basic-default: light-dark(rgb(229, 229, 229), rgb(85, 85, 85));
+  --ui-color-border-action-basic-active: light-dark(rgb(224, 240, 255), rgb(0, 56, 141));
+  --ui-color-border-action-basic-hover: light-dark(rgb(198, 198, 198), rgb(62, 62, 62));
+  --ui-color-border-action-basic-pressed: light-dark(rgb(171, 171, 171), rgb(25, 25, 25));
+  --ui-color-border-action-disabled: light-dark(rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.25));
+  --ui-color-border-action-active: light-dark(rgb(0, 112, 201), rgb(0, 112, 201));
+  --ui-color-border-action-active-alternative: light-dark(rgb(109, 92, 216), rgb(109, 92, 216));
+  --ui-color-border-action-secondary-default: light-dark(rgb(171, 171, 171), rgb(85, 85, 85));
+  --ui-color-border-action-secondary-hover: light-dark(rgb(142, 142, 142), rgb(62, 62, 62));
+  --ui-color-border-action-danger: light-dark(rgb(195, 67, 49), rgb(195, 67, 49));
+  --ui-color-border-action-success: light-dark(rgb(0, 127, 89), rgb(0, 127, 89));
+  --ui-color-border-surface-info: light-dark(rgb(0, 112, 201), rgb(46, 145, 236));
+  --ui-color-border-surface-success: light-dark(rgb(0, 127, 89), rgb(0, 161, 116));
+  --ui-color-border-surface-warning: light-dark(rgb(130, 110, 0), rgb(167, 140, 0));
+  --ui-color-border-surface-danger: light-dark(rgb(195, 67, 49), rgb(249, 85, 62));
+  --ui-color-border-focus: light-dark(rgb(0, 112, 201), rgb(255, 255, 255));
+  --ui-color-border-debug: light-dark(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0));
+  --ui-shadow-default: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+  --ui-shadow-muted: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0));
+  --ui-drop-shadow-small-layer-0-color: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+  --ui-drop-shadow-default-layer-0-color: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+  --ui-drop-shadow-default-layer-1-color: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05));
+  --ui-drop-shadow-large-layer-0-color: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+  --ui-drop-shadow-large-layer-1-color: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05));
+}
+}
+/* Import base styles */
+/* 1. Use a more-intuitive box-sizing model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+body {
+  /* 3. Add accessible line-height */
+  line-height: 1.5;
+  /* 4. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+/* 5. Improve media defaults */
+img,
+picture,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+/* 6. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+/* 7. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+/* 8. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+/*
+  9. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
+}
+.has-shadow-small {
+  box-shadow: var(--ui-drop-shadow-small-layer-0-offset-x)
+    var(--ui-drop-shadow-small-layer-0-offset-y)
+    var(--ui-drop-shadow-small-layer-0-blur)
+    var(--ui-drop-shadow-small-layer-0-spread)
+    var(--ui-drop-shadow-small-layer-0-color);
+}
+.has-shadow-default {
+  box-shadow:
+    var(--ui-drop-shadow-default-layer-1-offset-x)
+      var(--ui-drop-shadow-default-layer-1-offset-y)
+      var(--ui-drop-shadow-default-layer-1-blur)
+      var(--ui-drop-shadow-default-layer-1-spread)
+      var(--ui-drop-shadow-default-layer-1-color),
+    var(--ui-drop-shadow-default-layer-0-offset-x)
+      var(--ui-drop-shadow-default-layer-0-offset-y)
+      var(--ui-drop-shadow-default-layer-0-blur)
+      var(--ui-drop-shadow-default-layer-0-spread)
+      var(--ui-drop-shadow-default-layer-0-color);
+}
+.has-shadow-large {
+  box-shadow:
+    var(--ui-drop-shadow-large-layer-1-offset-x)
+      var(--ui-drop-shadow-large-layer-1-offset-y)
+      var(--ui-drop-shadow-large-layer-1-blur)
+      var(--ui-drop-shadow-large-layer-1-spread)
+      var(--ui-drop-shadow-large-layer-1-color),
+    var(--ui-drop-shadow-large-layer-0-offset-x)
+      var(--ui-drop-shadow-large-layer-0-offset-y)
+      var(--ui-drop-shadow-large-layer-0-blur)
+      var(--ui-drop-shadow-large-layer-0-spread)
+      var(--ui-drop-shadow-large-layer-0-color);
+}
+body {
+  font-family: 'Roboto', sans-serif;
+}
+/**
+ * Global font size modifier classes combine multiple font attributes.
+ */
+.-font-size-sm {
+  font-size: var(--ui-typography-font-size-14);
+  line-height: var(--ui-typography-line-height-20);
+}
+.-font-size-base {
+  font-size: var(--ui-typography-font-size-16);
+  line-height: var(--ui-typography-line-height-24);
+}
+/*
+ * Typography styles — predefined token combinations.
+ */
+/* Heading styles */
+.as-heading-1,
+.as-heading-2,
+.as-heading-3,
+.as-heading-4,
+.as-heading-5,
+.as-heading-6 {
+  font-weight: var(--ui-typography-font-weight-600);
+}
+.as-heading-1 {
+  font-size: var(--ui-typography-font-size-32);
+  line-height: var(--ui-typography-line-height-32);
+}
+.as-heading-2 {
+  font-size: var(--ui-typography-font-size-24);
+  line-height: var(--ui-typography-line-height-28);
+}
+.as-heading-3 {
+  font-size: var(--ui-typography-font-size-20);
+  line-height: var(--ui-typography-line-height-24);
+}
+.as-heading-4 {
+  font-size: var(--ui-typography-font-size-16);
+  line-height: var(--ui-typography-line-height-24);
+}
+.as-heading-5 {
+  font-size: var(--ui-typography-font-size-14);
+  line-height: var(--ui-typography-line-height-20);
+}
+.as-heading-6 {
+  font-size: var(--ui-typography-font-size-12);
+  line-height: var(--ui-typography-line-height-16);
+}
+/* Body styles */
+.as-body-large {
+  font-size: var(--ui-typography-font-size-20);
+  line-height: var(--ui-typography-line-height-28);
+}
+.as-body-default {
+  font-size: var(--ui-typography-font-size-16);
+  line-height: var(--ui-typography-line-height-24);
+}
+.as-body-small {
+  font-size: var(--ui-typography-font-size-14);
+  line-height: var(--ui-typography-line-height-20);
+}
+.as-body-xsmall {
+  font-size: var(--ui-typography-font-size-12);
+  line-height: var(--ui-typography-line-height-16);
+}
+/*
+ * Utility classes
+ * These classes are used to apply utility classes to the design system.
+ * The below is an example, remove it when we have real one.
+ */
+.dui-global-background {
+  background: var(--ui-global-background, #fff);
+}
+.sr-only {
+  position: absolute;
+  border: 0;
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+/* Apply the themes */
+:root {
+  --csstools-color-scheme--light: initial;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+:root {
+  --csstools-color-scheme--light:  ;
+}
+}
+.dark {
+  --csstools-color-scheme--light:   !important;
+  color-scheme: dark !important;
+}
+.light {
+  --csstools-color-scheme--light: initial !important;
+  color-scheme: light !important;
+}

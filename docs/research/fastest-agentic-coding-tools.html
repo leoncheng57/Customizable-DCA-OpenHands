@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Agentic Coding Tools Are Fast — and Whether OpenHands + Condenser Catches Up</title>
+<style>
+  :root {
+    --bg: #101114;
+    --bg-alt: #17181c;
+    --bg-card: #1c1e23;
+    --border: #2b2e35;
+    --text: #d6d8dd;
+    --text-dim: #9a9da5;
+    --heading: #f2f3f5;
+    --accent: #6ea8fe;
+    --green: #4ade80;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  main { max-width: 900px; margin: 0 auto; padding: 48px 24px 96px; }
+  h1 { color: var(--heading); font-size: 2rem; line-height: 1.25; margin: 0 0 8px; }
+  h2 { color: var(--heading); font-size: 1.4rem; margin: 56px 0 16px; padding-top: 24px; border-top: 1px solid var(--border); }
+  h3 { color: var(--heading); font-size: 1.1rem; margin: 32px 0 10px; }
+  p { margin: 0 0 14px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { font-family: var(--mono); font-size: 0.85em; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; }
+  .meta { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 32px; }
+  .tldr {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 24px 0 8px;
+  }
+  .tldr strong { color: var(--heading); }
+  table { width: 100%; border-collapse: collapse; margin: 18px 0 24px; font-size: 0.9rem; }
+  th, td { border: 1px solid var(--border); padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--bg-alt); color: var(--heading); font-weight: 600; }
+  tr:nth-child(even) td { background: var(--bg-alt); }
+  .num { font-family: var(--mono); font-size: 0.85rem; white-space: nowrap; }
+  .badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 99px;
+    padding: 1px 8px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .badge.verified { color: var(--green); border: 1px solid color-mix(in srgb, var(--green) 45%, transparent); background: color-mix(in srgb, var(--green) 10%, transparent); }
+  .badge.vendor { color: var(--amber); border: 1px solid color-mix(in srgb, var(--amber) 45%, transparent); background: color-mix(in srgb, var(--amber) 10%, transparent); }
+  .badge.anecdotal { color: var(--red); border: 1px solid color-mix(in srgb, var(--red) 45%, transparent); background: color-mix(in srgb, var(--red) 10%, transparent); }
+  ol.factors { padding-left: 0; counter-reset: factor; list-style: none; }
+  ol.factors > li {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px 16px 58px;
+    margin: 0 0 12px;
+    position: relative;
+    counter-increment: factor;
+  }
+  ol.factors > li::before {
+    content: counter(factor);
+    position: absolute;
+    left: 18px;
+    top: 16px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol.factors > li strong { color: var(--heading); }
+  ul { margin: 0 0 14px; padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  .verdict {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 24px 0;
+  }
+  .footnote { color: var(--text-dim); font-size: 0.85rem; }
+  .sources li { margin-bottom: 8px; font-size: 0.9rem; }
+  .caption { color: var(--text-dim); font-size: 0.82rem; margin-top: -16px; margin-bottom: 24px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0; }
+  @media (max-width: 720px) { .cols { grid-template-columns: 1fr; } }
+  .col-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; }
+  .col-card h4 { margin: 0 0 8px; color: var(--heading); font-size: 0.95rem; }
+  .col-card ul { margin-bottom: 0; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Why Agentic Coding Tools Are Fast</h1>
+<p class="meta">…and whether OpenHands with the context condenser achieves the same speed.<br>
+Research compiled August 2026 · sources: vendor engineering blogs &amp; docs, Terminal-Bench 2.1, Artificial Analysis, EvoClaw-Bench logs, OpenHands SDK v1.40.1 source, and this repository's deployment.</p>
+
+<div class="tldr">
+  <strong>TL;DR.</strong> Speed in agentic coding tools comes from seven levers, roughly ordered by impact:
+  reasoning-token budget, agent turn count, prompt caching, model decode speed, fast edit application,
+  parallelism, and environment overhead. Cursor, Claude Code, Codex, OpenCode, and Amp each pull a different
+  mix of these. OpenHands' <code>LLMSummarizingCondenser</code> addresses exactly <em>one</em> of the seven —
+  unbounded context growth on long trajectories — where it works well (up to 2× per-turn cost cut,
+  quadratic→linear scaling, success rate preserved). It does <strong>not</strong> close the gap on turn count,
+  parallelism, or reasoning budget; a cross-harness benchmark with the model held constant still measured
+  OpenHands at ~3.1× the wall-clock of Claude Code.
+</div>
+<p class="footnote">Evidence labels used throughout:
+<span class="badge verified">verified</span> independently measured or primary source with methodology ·
+<span class="badge vendor">vendor claim</span> self-reported by the tool's maker ·
+<span class="badge anecdotal">anecdotal</span> single-operator or community test.</p>
+
+<h2 id="taxonomy">1. The speed factor taxonomy</h2>
+<p>An agent loop is: <em>model generates (thinking + tool calls) → tools execute → results appended → repeat</em>.
+Every factor below attacks a different term in that loop's latency equation.</p>
+
+<ol class="factors">
+  <li>
+    <strong>Reasoning-token budget</strong> — the dominant latency term for frontier reasoning models.
+    Artificial Analysis measured Claude Sonnet 5 at max effort: 86.6 tok/s decode but
+    <span class="num">150.65&nbsp;s</span> time-to-first-answer-token vs a <span class="num">2.8&nbsp;s</span>
+    class median — thinking time, not decode speed, dominates perceived latency.
+    <span class="badge verified">verified</span><br>
+    Every fast tool exposes an effort dial: Codex <code>minimal→xhigh</code>, Claude Code <code>/effort</code>,
+    Amp's Rush mode ("GPT-5.5 with no reasoning — twice as fast" <span class="badge vendor">vendor claim</span>).
+  </li>
+  <li>
+    <strong>Number of agent turns</strong> — each tool call is a full API round trip carrying the whole transcript.
+    EvoClaw-Bench (raw logs published) held the model constant: Kimi-K2.6 issued
+    <span class="num">5,044</span> turns on OpenHands vs <span class="num">2,446</span> on Claude Code
+    and took 3.1× the wall-clock — attributed to tool inventory mismatch (no Grep/Glob/paginated-Read that models
+    were trained on) and prompt-induced test-thrashing (pytest run 9.2× more often).
+    <span class="badge verified">verified</span>
+  </li>
+  <li>
+    <strong>Prompt caching</strong> — cache reads price at <span class="num">0.1×</span> input with
+    TTFT reductions up to ~75–85% on long prompts (Anthropic docs). Real Claude Code sessions show
+    ~95% of input tokens as cache reads; xAI reports &gt;90% hit rates in coding harnesses; Codex-family models
+    get 24-hour cache retention. Cache <em>invalidation</em> is the flip side: switching models, changing tool
+    definitions, thinking config, or speed tier throws the prefix away.
+    <span class="badge verified">verified</span>
+  </li>
+  <li>
+    <strong>Model decode speed (tokens/sec)</strong> — spans &gt;20× across models
+    (86.6 tok/s Sonnet 5 → 1,932 tok/s Celeris-1, per Artificial Analysis <span class="badge verified">verified</span>).
+    Cursor Composer claims "4× faster than similar models" <span class="badge vendor">vendor claim</span>;
+    grok-code-fast-1 launched at 190 tok/s <span class="badge vendor">vendor claim</span>;
+    Anthropic fast mode sells 2.5× output tok/s on the same Opus weights at 2× price.
+  </li>
+  <li>
+    <strong>Fast edit application</strong> — frontier models are unreliable at diff formats (line numbers
+    tokenize badly; diffs are out-of-distribution), so Cursor splits <em>plan</em> (frontier model) from
+    <em>apply</em> (a fine-tuned full-file-rewrite model at ~<span class="num">1,000 tok/s</span> using
+    "speculative edits", ~13× over vanilla inference). <span class="badge vendor">vendor claim</span> (methodology published)
+  </li>
+  <li>
+    <strong>Parallelism</strong> — parallel tool calls within a turn and parallel subagents across contexts.
+    Anthropic's multi-agent research system cut research time "up to 90%" — with the explicit caveat that
+    coding parallelizes less well than research. <span class="badge vendor">vendor claim</span>
+    Cursor RL-trained Composer to "maximize parallelism whenever possible" in tool use.
+  </li>
+  <li>
+    <strong>Environment overhead</strong> — sandbox/container startup, approval-prompt round-trips,
+    tool-listing timeouts. OpenAI cut Codex cloud median task completion by 90% via container caching
+    <span class="badge vendor">vendor claim</span>; Amp removes approval prompts by default;
+    Codex's kernel sandbox (Seatbelt / Landlock+seccomp) makes unattended full-auto loops safe, eliminating
+    human round-trips. This is the weakest-quantified factor in public data.
+  </li>
+</ol>
+
+<h2 id="per-tool">2. Per-tool: why each is fast</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:12%">Tool</th><th>Primary speed mechanisms</th><th style="width:34%">Quantified claims</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Cursor</strong></td>
+      <td>Custom MoE model (Composer) RL-trained <em>for latency</em> inside the production harness — rewarded for
+      efficient/parallel tool calls and minimal output. Native MXFP8 training (fast inference without post-training
+      quantization), custom decode kernels ("warp decode"), speculative-edit apply model, semantic search index
+      to cut exploration turns, per-model tool formats, tracked cache-hit-rate.</td>
+      <td>Composer "4× faster than similar models" <span class="badge vendor">vendor claim</span>;
+      apply model ~1,000 tok/s, ~13× speedup <span class="badge vendor">vendor claim</span>;
+      warp decode 1.84× decode throughput <span class="badge vendor">vendor claim</span>;
+      real-time RL A/B: latency −10.3% <span class="badge vendor">vendor claim</span></td>
+    </tr>
+    <tr>
+      <td><strong>Claude Code</strong></td>
+      <td>Automatic prompt caching (1-hour TTL on subscriptions), auto-compaction + context-hygiene doctrine
+      ("the context window is the most important resource"), subagents in isolated contexts reporting summaries,
+      cheap models for background jobs (summarization, <code>model: haiku</code> subagents), parallel tool calls,
+      deferred MCP tool loading.</td>
+      <td>Cache reads 0.1× / TTFT −75–85% on long prompts <span class="badge verified">verified</span>;
+      example session ~95% cache reads <span class="badge verified">verified</span>;
+      parallel subagents "up to 90%" faster on research <span class="badge vendor">vendor claim</span></td>
+    </tr>
+    <tr>
+      <td><strong>Codex</strong></td>
+      <td>Model-side token efficiency: adaptive thinking (snappy on easy turns, hours-long on hard ones),
+      generational thinking-token cuts, native compaction across context windows. Harness: Rust CLI
+      (zero-dep, no GC), kernel sandbox enabling approval-free full-auto, Responses API reasoning-item reuse,
+      24-hour cache retention, cloud container caching, paid fast tier.</td>
+      <td>GPT-5-Codex: 93.7% fewer tokens on easiest 10% of turns vs GPT-5 <span class="badge vendor">vendor claim</span>;
+      5.1-Codex-Max: 30% fewer thinking tokens at equal quality <span class="badge vendor">vendor claim</span>;
+      cloud median task time −90% via container caching <span class="badge vendor">vendor claim</span>;
+      Responses API cache utilization 40%→80% <span class="badge vendor">vendor claim</span></td>
+    </tr>
+    <tr>
+      <td><strong>OpenCode</strong></td>
+      <td>Model-agnostic routing: per-agent models ("a faster model for planning, a more capable model for
+      implementation"), fast read-only <code>explore</code> subagent, parallel units of work via <code>general</code>
+      subagents, hidden system agents (compaction/title/summary) on cheap models, local TUI, instant undo/redo.</td>
+      <td>No published performance benchmarks — the speed story is architectural, not quantified.
+      <span class="badge anecdotal">anecdotal</span> (TUI "feel")</td>
+    </tr>
+    <tr>
+      <td><strong>Amp</strong></td>
+      <td>Per-subsystem model routing (fast models for search, titling, compaction, read-thread), mode dial
+      (low/rush → ultra), oracle reasoning only on demand, no approval prompts by default, handoff-over-compaction
+      ("200k tokens is plenty" — short threads keep prefill small), flicker-free TUI.</td>
+      <td>Search agent +50% via parallel execution; search subagent 3× faster on Gemini Flash;
+      compaction model 6× faster / 30× cheaper; Deep &amp; Rush start 87% faster, finish 32% faster
+      — all <span class="badge vendor">vendor claim</span> (announcement numbers, no methodology)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="benchmarks">3. Cross-harness benchmark data</h2>
+<p>The cleanest evidence isolates the harness by holding the model constant.</p>
+
+<h3>EvoClaw-Bench — same model, different harness <span class="badge verified">verified</span></h3>
+<p class="footnote" style="margin-top:-6px">Third-party, raw logs published on HuggingFace (see sources). Wall-clock is total across the suite.</p>
+<table>
+  <thead>
+    <tr><th>Model</th><th>Harness</th><th class="num">Score</th><th class="num">Avg turns</th><th class="num">Avg wall-time</th></tr>
+  </thead>
+  <tbody>
+    <tr><td rowspan="2">GLM-5</td><td>Claude Code</td><td class="num">25.7%</td><td class="num">2,122</td><td class="num">2.5 h</td></tr>
+    <tr><td>OpenHands</td><td class="num">20.6%</td><td class="num">2,676</td><td class="num">7.8 h (3.1×)</td></tr>
+    <tr><td rowspan="2">Kimi-K2.6</td><td>Claude Code</td><td class="num">34.7%</td><td class="num">2,446</td><td class="num">7.7 h</td></tr>
+    <tr><td>OpenHands</td><td class="num">23.3%</td><td class="num">5,044</td><td class="num">23.7 h (3.1×)</td></tr>
+    <tr><td rowspan="2">Gemini 3 Flash</td><td>Gemini CLI</td><td class="num">24.2%</td><td class="num">1,541</td><td class="num">5.0 h</td></tr>
+    <tr><td>OpenHands</td><td class="num">22.3%</td><td class="num">2,632</td><td class="num">7.2 h</td></tr>
+    <tr><td rowspan="2">GPT-5.3 Codex</td><td>Codex</td><td class="num">28.9%</td><td class="num">1,122</td><td class="num">8.2 h</td></tr>
+    <tr><td>OpenHands</td><td class="num">26.5%</td><td class="num">1,047</td><td class="num">18.8 h</td></tr>
+  </tbody>
+</table>
+<p>Forensic causes identified: (1) terminal-only tool inventory inflates turns for models trained on
+Grep/Glob/Read-style tools; (2) system-prompt clauses caused test-thrashing loops — pytest ran
+<span class="num">9.2×</span> more often (239 vs 26) on scikit-learn; (3) sloppy edits silently broke
+test-visible API shape, converting edit-format issues into retry time. Note the GPT-5.3 Codex row: <em>fewer</em>
+turns on OpenHands yet 2.3× the wall-clock — consistent with per-action environment overhead differences.</p>
+
+<h3>Terminal-Bench 2.1 — cost as a token-volume proxy <span class="badge verified">verified</span></h3>
+<table>
+  <thead>
+    <tr><th class="num">Rank</th><th>Agent</th><th>Model</th><th class="num">Accuracy</th><th class="num">Cost (full run)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="num">1</td><td>Claude Code</td><td>Fable 5 (xhigh)</td><td class="num">83.8%</td><td class="num">$552.67</td></tr>
+    <tr><td class="num">2</td><td>Codex</td><td>GPT-5.5 (xhigh)</td><td class="num">83.1%</td><td class="num">$2,059.19</td></tr>
+    <tr><td class="num">4</td><td>Cursor CLI</td><td>Grok 4.5 (high)</td><td class="num">79.3%</td><td class="num">$134.09</td></tr>
+    <tr><td class="num">5</td><td>Claude Code</td><td>Opus 4.8 (high)</td><td class="num">78.9%</td><td class="num">$286.94</td></tr>
+    <tr><td class="num">14</td><td>Gemini CLI</td><td>Gemini 3 Pro (high)</td><td class="num">65.8%</td><td class="num">$247.76</td></tr>
+  </tbody>
+</table>
+<p class="caption">At near-identical accuracy (rows 1–2), Claude Code's run cost ~1/4 of Codex's — cost correlates
+with token volume, which correlates with wall time. Cursor CLI's row carries a −9.0% "hacks" adjustment.</p>
+
+<h3>Composio harness test — same model, both harnesses <span class="badge anecdotal">anecdotal</span></h3>
+<table>
+  <thead>
+    <tr><th>Harness</th><th class="num">Passed</th><th class="num">Median time</th><th class="num">Tool calls</th><th class="num">Cost</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Claude Code</td><td class="num">16/30</td><td class="num">122.7 s</td><td class="num">358</td><td class="num">$3.12</td></tr>
+    <tr><td>Codex</td><td class="num">16/30</td><td class="num">245.0 s</td><td class="num">448</td><td class="num">$1.29</td></tr>
+  </tbody>
+</table>
+<p class="caption">DeepSeek V4 Flash through both harnesses, 30 identical tasks. Identical accuracy; Claude Code
+~2× faster, Codex ~58% cheaper. Single-operator vendor blog — directional only.</p>
+
+<p>Artificial Analysis' coding-agent benchmark formalizes the same point — it measures time-per-task, turns,
+token mix, and cache-hit-rate per agent+model, and runs the <em>same</em> model (Opus 4.7) through Claude Code,
+Cursor CLI, and OpenCode to isolate harness effects. Their FAQ states it directly: <em>"an agent can have a fast
+underlying model and still be slower overall if its workflow is longer or more tool-heavy."</em></p>
+
+<h2 id="openhands">4. OpenHands + condenser: does it achieve the same speed?</h2>
+
+<div class="verdict">
+  <strong>Verdict: No.</strong> The condenser solves one specific problem — unbounded context growth on long
+  trajectories — which is one of the seven speed factors. It brings OpenHands to parity with what Claude Code's
+  auto-compaction and Codex's native compaction already do, but leaves turn count, sequential tool execution,
+  parallelism, and reasoning budget untouched. Cross-harness data (EvoClaw) still shows ~3.1× the wall-clock
+  of Claude Code at the same model.
+</div>
+
+<h3>What the condenser is</h3>
+<p><code>LLMSummarizingCondenser</code> (SDK v1.40.1 source, verified):</p>
+<ul>
+  <li><strong>Trigger</strong> — fires when history exceeds <code>max_size</code> events (soft) or total tokens exceed
+  <code>max_tokens</code> (hard), or on explicit request (e.g. after a context-window-exceeded error).</li>
+  <li><strong>Action</strong> — keeps the first <code>keep_first</code> events (system prompt + task) and a recent tail;
+  replaces the middle with <em>one LLM-written summary event</em>. Targets ~half the threshold so it doesn't re-fire
+  every step. Summaries are re-summarized in later condensations. A <code>hard_context_reset</code> fallback
+  summarizes the entire view with truncation retries.</li>
+  <li><strong>Costs</strong> — each condensation is an <em>extra LLM call</em> (billed under a separate
+  <code>condenser</code> usage key), consumes an agent turn, and — per the SDK's own README —
+  <em>"condensation destroys the prompt cache, but doing so regularly keeps the cost of rebuilding the prompt
+  cache low."</em></li>
+</ul>
+
+<h3>Measured effects <span class="badge verified">verified</span></h3>
+<ul>
+  <li><strong>Cost:</strong> up to 2× per-turn API cost reduction once condensation kicks in; cumulative cost scaling
+  goes from quadratic to linear in conversation length (All Hands blog, Apr 2025).</li>
+  <li><strong>Latency:</strong> "consistent response times in long sessions"; benchmark tasks solved with less money,
+  fewer tokens, and less completion time. No single latency multiplier published — but this deployment's own
+  measurement (issue #48) was <strong>4× slower per step at 100–200k tokens/turn</strong> before enabling the token
+  trigger, so the effect on long sessions is real and large.</li>
+  <li><strong>Quality:</strong> 54% vs 53% on a SWE-bench Verified subset — success rate preserved, not improved.
+  The only trade-off is slightly more turns (the condensation turns themselves).</li>
+</ul>
+
+<h3>This deployment's configuration</h3>
+<table>
+  <thead><tr><th>Parameter</th><th class="num">Stock (agent-canvas 1.12)</th><th class="num">This deployment</th><th>Where</th></tr></thead>
+  <tbody>
+    <tr><td><code>condenser_kind</code></td><td class="num">llm_summarizing</td><td class="num">llm_summarizing</td><td>never touched by BFF</td></tr>
+    <tr><td><code>max_size</code></td><td class="num">240 events</td><td class="num">240</td><td><code>server/openhands/agentSettings.ts:49</code></td></tr>
+    <tr><td><code>max_tokens</code></td><td class="num">null (off)</td><td class="num"><strong>80,000</strong></td><td>seeded: <code>scripts/seed-agent-settings.mjs:80-91</code></td></tr>
+    <tr><td><code>keep_first</code></td><td class="num">2</td><td class="num">2</td><td><code>server/openhands/agentSettings.ts:49</code></td></tr>
+  </tbody>
+</table>
+<p>Critical repo-specific detail: the agent-server does <em>not</em> merge the persisted default profile into
+conversations created with an <code>agent_settings</code> payload, so the BFF forwards the condenser config on
+both create paths via <code>conversationAgentSettings()</code>
+(<code>server/openhands/agentSettings.ts:174-194</code>; decision #18). Before that fix, 0 of 64 stored
+conversations carried the configured <code>max_tokens</code>.</p>
+
+<h3>What the condenser does <em>not</em> optimize</h3>
+<div class="cols">
+  <div class="col-card">
+    <h4>Turn count / tool design</h4>
+    <ul>
+      <li>EvoClaw's 3.1× wall-clock gap is tool inventory + prompt behavior, not context length.</li>
+      <li>No Grep/Glob/paginated-Read tools that models were RL-trained against.</li>
+    </ul>
+  </div>
+  <div class="col-card">
+    <h4>Sequential execution</h4>
+    <ul>
+      <li>SDK 1.40 <code>tool_concurrency_limit</code> defaults to <strong>1</strong> (sequential).</li>
+      <li>Steps are strictly sequential; no parallel subagents.</li>
+    </ul>
+  </div>
+  <div class="col-card">
+    <h4>Per-step model speed &amp; reasoning budget</h4>
+    <ul>
+      <li>Model-agnostic passthrough — nothing like Codex's adaptive thinking or Cursor's fast-apply model.</li>
+      <li>Below 80k tokens / 240 events the condenser never fires: <strong>zero effect on short sessions</strong>.</li>
+    </ul>
+  </div>
+  <div class="col-card">
+    <h4>Environment overhead</h4>
+    <ul>
+      <li>Fixed per-run stalls (e.g. a dead MCP server's 20 s tool-listing timeout, issue #41) are out of reach.</li>
+      <li>Classic OpenHands V0 per-conversation Docker startup is a fixed cost it cannot touch.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 id="sources">5. Sources</h2>
+
+<h3>High-trust (independent measurement or primary source with methodology)</h3>
+<ul class="sources">
+  <li>Terminal-Bench 2.1 leaderboard — <a href="https://www.tbench.ai/leaderboard/terminal-bench/2.1">tbench.ai/leaderboard/terminal-bench/2.1</a> · paper <a href="https://arxiv.org/abs/2601.11868">arXiv:2601.11868</a></li>
+  <li>Artificial Analysis coding-agent benchmarks — <a href="https://artificialanalysis.ai/agents/coding-agents">artificialanalysis.ai/agents/coding-agents</a> · model pages, e.g. <a href="https://artificialanalysis.ai/models/claude-sonnet-5">Claude Sonnet 5</a></li>
+  <li>EvoClaw-Bench cross-harness analysis — <a href="https://github.com/OpenHands/software-agent-sdk/issues/3112">software-agent-sdk #3112</a> · raw logs <a href="https://huggingface.co/datasets/EvoClaw-Bench/EvoClaw-log">HuggingFace: EvoClaw-log</a></li>
+  <li>Anthropic prompt caching docs — <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">platform.claude.com/…/prompt-caching</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/fast-mode">fast mode</a></li>
+  <li>OpenHands condenser source (v1.40.1) — <a href="https://github.com/OpenHands/software-agent-sdk/blob/v1.40.1/openhands-sdk/openhands/sdk/context/condenser/llm_summarizing_condenser.py">llm_summarizing_condenser.py</a> · <a href="https://github.com/OpenHands/software-agent-sdk/blob/v1.40.1/openhands-sdk/openhands/sdk/context/condenser/README.md">condenser README</a> · SDK paper <a href="https://arxiv.org/abs/2511.03690">arXiv:2511.03690</a> · platform paper <a href="https://arxiv.org/abs/2407.16741">arXiv:2407.16741</a></li>
+  <li>SWE-bench leaderboards (cost/step plots, "Bash Only" harness-controlled view) — <a href="https://www.swebench.com/">swebench.com</a> · <a href="https://github.com/SWE-agent/mini-swe-agent">mini-swe-agent</a></li>
+</ul>
+
+<h3>Vendor-published (self-reported numbers)</h3>
+<ul class="sources">
+  <li>Cursor — <a href="https://cursor.com/blog/composer">Composer</a> · <a href="https://cursor.com/blog/instant-apply">Editing files at 1000 tokens/s</a> · <a href="https://cursor.com/blog/kernels">MXFP8 kernels</a> · <a href="https://cursor.com/blog/warp-decode">warp decode</a> · <a href="https://cursor.com/blog/semsearch">semantic search</a> · <a href="https://cursor.com/blog/continually-improving-agent-harness">agent harness</a> · <a href="https://cursor.com/blog/real-time-rl-for-composer">real-time RL</a></li>
+  <li>OpenAI — <a href="https://openai.com/index/introducing-upgrades-to-codex/">GPT-5-Codex upgrades</a> · <a href="https://openai.com/index/gpt-5-1-codex-max/">GPT-5.1-Codex-Max</a> · <a href="https://openai.com/index/introducing-codex/">Introducing Codex</a> · <a href="https://github.com/openai/codex/discussions/1174">Rust CLI rationale</a> · <a href="https://cookbook.openai.com/examples/responses_api/reasoning_items">Responses API reasoning items</a> · <a href="https://developers.openai.com/api/docs/guides/prompt-caching">prompt caching</a> · <a href="https://developers.openai.com/codex/agent-configuration/speed">Codex speed tiers</a></li>
+  <li>Anthropic — <a href="https://code.claude.com/docs/en/how-claude-code-works">how Claude Code works</a> · <a href="https://code.claude.com/docs/en/costs">costs</a> · <a href="https://www.anthropic.com/engineering/built-multi-agent-research-system">multi-agent research system</a></li>
+  <li>All Hands / OpenHands — <a href="https://www.openhands.dev/blog/openhands-context-condensensation-for-more-efficient-ai-agents">context condensation blog (Apr 2025)</a> · <a href="https://docs.openhands.dev/sdk/guides/context-condenser">SDK condenser guide</a></li>
+  <li>OpenCode docs — <a href="https://opencode.ai/docs">opencode.ai/docs</a> · <a href="https://opencode.ai/docs/agents/">agents</a></li>
+  <li>Amp — <a href="https://ampcode.com/manual">manual</a> · <a href="https://ampcode.com/modes">modes &amp; models</a> · <a href="https://ampcode.com/news">chronicle</a></li>
+  <li>xAI — <a href="https://x.ai/news/grok-code-fast-1">grok-code-fast-1</a></li>
+</ul>
+
+<h3>Anecdotal / directional (labeled as such above)</h3>
+<ul class="sources">
+  <li>Composio, "Claude Code vs OpenAI Codex" — <a href="https://composio.dev/content/claude-code-vs-openai-codex">composio.dev</a> (single-operator harness test)</li>
+  <li>Particula Tech, Codex vs Claude Code CLI comparison — <a href="https://particula.tech/blog/codex-vs-claude-code-cli-agent-comparison">particula.tech</a> (n=1 refactor test)</li>
+  <li>Builder.io, "Codex vs Claude Code" — <a href="https://www.builder.io/blog/codex-vs-claude-code">builder.io/blog</a> (qualitative)</li>
+  <li>Simon Willison on GPT-5-Codex — <a href="https://simonwillison.net/2025/Sep/15/gpt-5-codex/">simonwillison.net</a></li>
+</ul>
+
+<h3>Caveats</h3>
+<ul class="footnote">
+  <li>Vendor multipliers (Cursor's "4×", OpenAI's "93.7%", Amp's announcement numbers) are self-reported with self-chosen methodology.</li>
+  <li>The community "4× fewer tokens / 10× cheaper" Codex-vs-Claude figures trace back to what appears to be a single shared benchmark repeated across posts.</li>
+  <li>No authoritative measured figure was found for Docker sandbox startup overhead; the claim that it is a fixed cost untouched by the condenser is architectural, not measured.</li>
+  <li>This deployment's condenser probe reflects the local agent-canvas 1.12 / SDK 1.40.1 state; stock installs ship <code>max_tokens: null</code> (token trigger off).</li>
+</ul>
+
+<p class="footnote" style="margin-top:40px">Compiled from parallel research-agent runs, August 2026. Static document — no external assets, renders offline.</p>
+
+</main>
+</body>
+</html>

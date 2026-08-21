@@ -1,0 +1,428 @@
+/* Roboto (UI) + JetBrains Mono (code). */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap");
+
+@import "tailwindcss";
+
+/* Vendored theme: tailwind-bridge.css registers the design tokens with
+   Tailwind v4, tokens.css carries the base variable definitions for
+   light/dark. */
+@import "./theme/tailwind-bridge.css";
+@import "./theme/tokens.css" layer(base);
+
+/* Class-based dark mode driven by next-themes (adds .dark on <html>). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Modern shell polish ─────────────────────────────────────────────────── */
+
+:root {
+  /* Brand accent: Supabase green (#3ECF8E) with a deeper green partner,
+     used by the logo mark, nav active pill, focus rings, and selection. */
+  --app-accent-a: #3ecf8e;
+  --app-accent-b: #24b47e;
+
+  /* Retint the theme's primary action color to match the brand so buttons
+     don't clash with the accent (the vendored theme defaults to blue).
+     Deeper greens than the accent for white-text contrast. */
+  --color-background-action-primary: #059669;
+  --color-background-action-primary-hover: #047857;
+}
+
+.dark {
+  --color-background-action-primary: #10b981;
+  --color-background-action-primary-hover: #059669;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  /* Subtle depth behind the content instead of a flat sheet. */
+  background:
+    radial-gradient(1200px 500px at 15% -10%, color-mix(in oklab, var(--app-accent-a) 7%, transparent), transparent 60%),
+    radial-gradient(900px 400px at 110% 0%, color-mix(in oklab, var(--app-accent-b) 6%, transparent), transparent 55%),
+    var(--color-background-default);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--app-accent-a) 30%, transparent);
+}
+
+/* Slimmer, theme-aware scrollbars for the panel-heavy conversation UI. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-text-default) 25%, transparent) transparent;
+}
+
+/* Referenced by every internal scroller. The global rule above already
+   applies the behaviour; this makes the class real so it survives if that
+   wildcard is ever narrowed. */
+.thin-scrollbar {
+  scrollbar-width: thin;
+}
+
+/* Bottom-sheet motion (mobile conversation panels — MobileSheet.tsx). */
+@keyframes app-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes app-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.app-sheet-enter {
+  animation: app-sheet-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.app-scrim-enter {
+  animation: app-fade-in 180ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-sheet-enter,
+  .app-scrim-enter {
+    animation: none;
+  }
+}
+
+/* Cards: every bordered rounded box gets a hair more elevation + softness. */
+.rounded-lg {
+  border-radius: 0.75rem;
+}
+
+/* Softer default borders (the theme's default reads harsh on the gradient). */
+.border-\[var\(--color-border-default\)\] {
+  border-color: color-mix(in oklab, var(--color-border-default) 72%, transparent);
+}
+
+/* Focus ring on inputs/textareas/selects — modern, consistent, token-driven. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+  border-color: color-mix(in oklab, var(--app-accent-a) 55%, var(--color-border-default));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--app-accent-a) 18%, transparent);
+  transition: box-shadow 120ms ease, border-color 120ms ease;
+}
+
+/* Smooth micro-interactions everywhere interactive. */
+button,
+a,
+input,
+select,
+textarea {
+  transition:
+    background-color 130ms ease,
+    border-color 130ms ease,
+    color 130ms ease,
+    box-shadow 130ms ease,
+    transform 130ms ease;
+}
+
+/* ── Reusable shell classes (used by main.tsx / Hub) ─────────────────────── */
+
+/* Floating island navbar: glass panel detached from the viewport edge. */
+.app-navbar {
+  background: color-mix(in oklab, var(--color-background-surface) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid color-mix(in oklab, var(--color-border-default) 55%, transparent);
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.04),
+    0 8px 28px -12px rgb(0 0 0 / 0.35),
+    inset 0 1px 0 color-mix(in oklab, white 8%, transparent);
+}
+
+.app-logo-mark {
+  background: linear-gradient(135deg, var(--app-accent-a), var(--app-accent-b));
+  box-shadow: 0 2px 10px color-mix(in oklab, var(--app-accent-a) 45%, transparent);
+}
+
+/* Recessed segmented track holding the nav items. */
+.app-nav-track {
+  border-radius: 9999px;
+  padding: 3px;
+  background: color-mix(in oklab, var(--color-background-default) 55%, transparent);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+.app-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 9999px;
+  padding: 0.32rem 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+.app-nav-item:hover {
+  color: var(--color-text-default);
+  background: color-mix(in oklab, var(--color-background-surface) 90%, transparent);
+}
+/* Below md the pills are icon-only and too small to tap reliably. */
+@media (pointer: coarse) {
+  .app-nav-item {
+    padding: 0.6rem;
+    min-height: 2.5rem;
+    min-width: 2.5rem;
+    justify-content: center;
+  }
+}
+.app-nav-item[data-active="true"] {
+  /* Dark text on Supabase green (white fails contrast on #3ecf8e). */
+  color: #052e16;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--app-accent-a), color-mix(in oklab, var(--app-accent-a) 45%, var(--app-accent-b)));
+  box-shadow:
+    0 2px 10px -2px color-mix(in oklab, var(--app-accent-a) 55%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 0.18);
+}
+
+.app-card {
+  border-radius: 0.9rem;
+  border: 1px solid color-mix(in oklab, var(--color-border-default) 72%, transparent);
+  background: color-mix(in oklab, var(--color-background-surface) 65%, transparent);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -18px rgb(0 0 0 / 0.25);
+}
+
+.app-project-card {
+  border-radius: 0.6rem;
+  border: 1px solid color-mix(in oklab, var(--color-border-default) 72%, transparent);
+  background: color-mix(in oklab, var(--color-background-surface) 55%, transparent);
+}
+.app-project-card:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in oklab, var(--app-accent-a) 45%, var(--color-border-default));
+  box-shadow: 0 4px 14px -8px color-mix(in oklab, var(--app-accent-a) 45%, transparent);
+}
+.app-project-card[data-selected="true"] {
+  border-color: var(--app-accent-a);
+  background: color-mix(in oklab, var(--app-accent-a) 10%, var(--color-background-surface));
+  box-shadow: 0 0 0 1px var(--app-accent-a);
+  font-weight: 600;
+}
+
+/* ── Markdown typography (`prose-ui`, see client/ds/markdown.tsx) ─────── */
+/* The Markdown renderer wraps its output in `.prose-ui`; these rules are
+   the entire typography treatment for agent prose (no plugin involved). */
+
+.prose-ui > * + * {
+  margin-top: 0.6em;
+}
+.prose-ui > :first-child {
+  margin-top: 0;
+}
+
+.prose-ui h1,
+.prose-ui h2,
+.prose-ui h3,
+.prose-ui h4 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 1.1em;
+}
+.prose-ui h1 { font-size: 1.25em; }
+.prose-ui h2 { font-size: 1.15em; }
+.prose-ui h3 { font-size: 1.05em; }
+.prose-ui h4 { font-size: 1em; }
+
+.prose-ui a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  color: color-mix(in oklab, var(--app-accent-b) 80%, var(--color-text-default));
+}
+.prose-ui a:hover {
+  color: var(--app-accent-b);
+}
+
+.prose-ui ul {
+  list-style: disc;
+  padding-left: 1.4em;
+}
+.prose-ui li + li {
+  margin-top: 0.2em;
+}
+
+.prose-ui code {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.86em;
+  padding: 0.1em 0.35em;
+  border-radius: 0.3rem;
+  background: color-mix(in oklab, var(--color-text-default) 8%, transparent);
+  /* Long paths/URLs in inline code are single unbreakable boxes — the main
+     horizontal-overflow source on phones. Break anywhere rather than push
+     the transcript column wide. Block code (pre > code) scrolls instead. */
+  overflow-wrap: anywhere;
+}
+
+/* Agent-emitted images must never exceed the chat column. */
+.prose-ui img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+/* ── Contributing docs (DocPage.tsx) ────────────────────────────────────────
+   Typography for full rendered markdown documents. Scoped under .doc-prose so
+   it can't leak into transcript markdown (ds/markdown.tsx output). */
+.doc-prose {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--color-text-default);
+}
+.doc-prose h1 {
+  font-size: 1.5rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.75rem;
+}
+.doc-prose h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 2rem 0 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in oklab, var(--color-border-default) 55%, transparent);
+}
+.doc-prose h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.4rem 0 0.35rem;
+}
+.doc-prose p {
+  margin: 0.6rem 0;
+}
+.doc-prose ul,
+.doc-prose ol {
+  margin: 0.6rem 0;
+  padding-left: 1.4rem;
+}
+.doc-prose ul { list-style: disc; }
+.doc-prose ol { list-style: decimal; }
+.doc-prose li { margin: 0.25rem 0; }
+.doc-prose li > ul, .doc-prose li > ol { margin: 0.2rem 0; }
+.doc-prose blockquote {
+  margin: 0.8rem 0;
+  padding: 0.35rem 0.9rem;
+  border-left: 3px solid color-mix(in oklab, var(--app-accent-a) 55%, var(--color-border-default));
+  background: color-mix(in oklab, var(--color-background-surface) 70%, transparent);
+  border-radius: 0 0.4rem 0.4rem 0;
+  color: var(--color-text-muted);
+}
+.doc-prose code {
+  font-size: 0.8em;
+  padding: 0.1em 0.35em;
+  border-radius: 0.3rem;
+  background: color-mix(in oklab, var(--color-text-default) 8%, transparent);
+}
+
+.prose-ui pre {
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in oklab, var(--color-border-default) 72%, transparent);
+  background: color-mix(in oklab, var(--color-background-surface) 80%, transparent);
+  overflow-x: auto;
+  line-height: 1.5;
+}
+.prose-ui pre code {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.prose-ui hr {
+  border: none;
+  border-top: 1px solid color-mix(in oklab, var(--color-border-default) 72%, transparent);
+  margin-block: 1em;
+}
+
+/* GFM tables: bordered rounded card, padded cells, muted header row.
+   `display: block` + overflow keeps wide agent tables scrollable instead
+   of blowing out the chat column. */
+.prose-ui table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.92em;
+  border: 1px solid color-mix(in oklab, var(--color-border-default) 72%, transparent);
+  border-radius: 0.5rem;
+}
+.prose-ui th,
+.prose-ui td {
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-ui th {
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: color-mix(in oklab, var(--color-background-surface) 80%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-border-default) 72%, transparent);
+}
+.prose-ui td {
+  border-top: 1px solid color-mix(in oklab, var(--color-border-default) 45%, transparent);
+}
+.prose-ui tr:first-child td {
+  border-top: none;
+}
+.prose-ui tbody tr:nth-child(even) td {
+  background: color-mix(in oklab, var(--color-background-surface) 40%, transparent);
+}
+
+.doc-prose .doc-code {
+  margin: 0.8rem 0;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  border-radius: 0.6rem;
+  border: 1px solid color-mix(in oklab, var(--color-border-default) 72%, transparent);
+  background: color-mix(in oklab, var(--color-background-surface) 80%, transparent);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+.doc-prose .doc-code code {
+  padding: 0;
+  background: transparent;
+  font-size: inherit;
+}
+.doc-prose table {
+  width: 100%;
+  margin: 0.8rem 0;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+.doc-prose th,
+.doc-prose td {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid color-mix(in oklab, var(--color-border-default) 72%, transparent);
+  text-align: left;
+  vertical-align: top;
+}
+.doc-prose th {
+  font-weight: 600;
+  background: color-mix(in oklab, var(--color-background-surface) 85%, transparent);
+}
+.doc-prose hr {
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-default);
+}
+.doc-prose a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.doc-prose a:hover { opacity: 0.8; }
+.doc-prose img { max-width: 100%; border-radius: 0.5rem; }
+.doc-mermaid svg { max-width: 100%; height: auto; }

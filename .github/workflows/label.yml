@@ -1,0 +1,22 @@
+name: pr-labeler
+
+# pull_request_target is safe HERE (per docs/cicd.md's rule that its use must
+# be justified): actions/labeler never checks out or executes PR-head code —
+# it only reads changed file paths via the API and applies labels from the
+# base ref's .github/labeler.yml. No `actions/checkout` may be added to this
+# workflow without re-doing that analysis.
+on:
+  pull_request_target:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          sync-labels: true

@@ -14,6 +14,19 @@ export default defineConfig(() => {
 
   return {
     base,
+    define: {
+      // Demo mode (GitHub Pages): client/mock/ stands in for the BFF.
+      //
+      // Vite only inlines VITE_* vars that are actually SET, so an ordinary
+      // build leaves `import.meta.env.VITE_DEMO` as a runtime property read —
+      // and Rollup then has to keep the mock backend and the demo banner in
+      // the bundle just in case. Defining it unconditionally makes the flag a
+      // literal either way, so `if (DEMO)` in main.tsx folds away and the
+      // whole client/mock/ subtree drops out of the self-hosted build. It is a
+      // BOOLEAN literal, not the raw string: Rollup folds `if (false)` but not
+      // `if (Boolean(""))`, and only the folded form actually tree-shakes.
+      "import.meta.env.VITE_DEMO": JSON.stringify(Boolean(process.env.VITE_DEMO)),
+    },
     plugins: [react(), tailwindcss()],
     root: "client",
     build: {

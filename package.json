@@ -13,6 +13,7 @@
     "dev:server": "tsx watch server/index.ts",
     "dev:ui": "vite",
     "build:ui": "vite build",
+    "build:demo": "VITE_DEMO=1 VITE_BASE_PATH=/Customizable-DCA-OpenHands/ vite build",
     "build:server": "tsc -p tsconfig.server.json",
     "build": "npm run build:ui && npm run build:server",
     "start": "node dist/server/index.js",

@@ -22,6 +22,10 @@
 //     long conversation list instead of being alphabetised into it.
 
 import type { ConversationSummary } from "./api.js";
+// Type-only from docs.js (erased at build); the route helper comes from the
+// import-free doc-links module so this eagerly-loaded file never pulls the
+// bundled markdown corpus into the main chunk.
+import { docRoute } from "./doc-links.js";
 import type { DocMeta } from "./docs.js";
 
 /** What a command does, and which registry it came from. */
@@ -124,7 +128,7 @@ export function buildCommands(input: BuildCommandsInput): Command[] {
       subtitle: doc.blurb,
       group: "Docs",
       keywords: [doc.slug, doc.category, doc.path],
-      to: `/openhands/contributing/${doc.slug}`,
+      to: docRoute(doc.slug),
     });
   }
 

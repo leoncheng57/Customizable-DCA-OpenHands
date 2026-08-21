@@ -20,7 +20,7 @@ import "@xyflow/react/dist/style.css";
 import { useTheme } from "next-themes";
 import { ExternalLink } from "lucide-react";
 import { Badge } from "../ds/badge.js";
-import { CATEGORY_LABELS, DOCS, REPO_URL, type DocCategory } from "../lib/docs.js";
+import { CATEGORY_LABELS, DOCS, docRoute, REPO_URL, type DocCategory } from "../lib/docs.js";
 
 interface MapNodeData extends Record<string, unknown> {
   title: string;
@@ -39,7 +39,7 @@ function MapNode({ data }: NodeProps<Node<MapNodeData>>) {
       transition={{ delay: data.delay, duration: 0.35, ease: "easeOut" }}
       whileHover={{ scale: 1.06, y: -2 }}
       whileTap={{ scale: 0.97 }}
-      onClick={() => navigate(`/openhands/contributing/${data.slug}`)}
+      onClick={() => navigate(docRoute(data.slug))}
       className={`w-44 cursor-pointer rounded-xl border px-3 py-2 text-left shadow-sm ${data.tone}`}
       title={`Open the ${data.title} doc`}
     >
@@ -211,7 +211,7 @@ export function ContributingPage() {
                   transition={{ delay: 0.15 + catIdx * 0.1 + i * 0.05, duration: 0.3 }}
                 >
                   <Link
-                    to={`/openhands/contributing/${doc.slug}`}
+                    to={docRoute(doc.slug)}
                     data-testid={`doc-card-${doc.slug}`}
                     className="group block h-full rounded-lg border border-[var(--color-border-default)] p-4 transition-colors hover:border-[var(--color-border-focus)]"
                   >

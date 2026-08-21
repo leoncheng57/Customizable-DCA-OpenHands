@@ -300,6 +300,67 @@ textarea {
   font-weight: 600;
   margin: 1.4rem 0 0.35rem;
 }
+/* h4–h6 are unused by the corpus today but must not fall back to UA styles
+   (which would out-size the 0.875rem body text). */
+.doc-prose h4,
+.doc-prose h5,
+.doc-prose h6 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 1.1rem 0 0.25rem;
+  color: var(--color-text-default);
+}
+.doc-prose h5,
+.doc-prose h6 {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.75rem;
+}
+
+/* Heading permalinks (DocPage's DocHeading). The `#` is aria-hidden and
+   untabbable — it mirrors GitHub's own affordance, so a reader can grab a
+   link to a section without the anchor polluting the accessible name. */
+.doc-prose .doc-heading {
+  scroll-margin-top: 1rem;
+}
+.doc-prose .doc-heading-anchor {
+  margin-left: 0.4ch;
+  padding: 0 0.15em;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.doc-prose .doc-heading:hover .doc-heading-anchor,
+.doc-prose .doc-heading-anchor:focus-visible {
+  opacity: 1;
+}
+/* No hover on touch, so the anchor would be permanently invisible; the
+   heading id still works for shared links. */
+@media (hover: none) {
+  .doc-prose .doc-heading-anchor {
+    display: none;
+  }
+}
+/* :target lands the reader on the section — a brief tint says "here". */
+.doc-prose .doc-heading:target {
+  animation: doc-target-flash 1.6s ease-out;
+}
+@keyframes doc-target-flash {
+  from {
+    background: color-mix(in oklab, var(--app-accent-a) 22%, transparent);
+  }
+  to {
+    background: transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .doc-prose .doc-heading:target {
+    animation: none;
+  }
+}
 .doc-prose p {
   margin: 0.6rem 0;
 }
@@ -426,3 +487,80 @@ textarea {
 .doc-prose a:hover { opacity: 0.8; }
 .doc-prose img { max-width: 100%; border-radius: 0.5rem; }
 .doc-mermaid svg { max-width: 100%; height: auto; }
+
+/* Every link DocPage renders carries .doc-link — in-prose links, in-page
+   anchors, and the prev/next pair. The pair sits OUTSIDE .doc-prose, so
+   before this rule existed it inherited nothing and rendered as plain body
+   text with no affordance at all. Kept quiet (body colour + a faint
+   underline) so link-dense prose doesn't turn into a wall of blue; the colour
+   only arrives on hover/focus. */
+.doc-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+  border-radius: 0.2rem;
+  transition:
+    color 120ms ease,
+    text-decoration-color 120ms ease;
+}
+.doc-link:hover,
+.doc-link:focus-visible {
+  color: var(--color-text-link);
+  text-decoration-color: currentColor;
+  opacity: 1; /* beats the generic .doc-prose a:hover dimming */
+}
+.doc-link:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--app-accent-a) 70%, transparent);
+  outline-offset: 2px;
+}
+
+/* Prev/next: the primary "keep reading" affordance, so give it a real target
+   area instead of a bare line of text. */
+.doc-nav-link {
+  display: inline-flex;
+  max-width: 48%;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  margin: -0.3rem -0.6rem;
+  color: var(--color-text-muted);
+  text-decoration-color: transparent;
+}
+.doc-nav-link:hover,
+.doc-nav-link:focus-visible {
+  background: color-mix(in oklab, var(--color-background-surface) 80%, transparent);
+  color: var(--color-text-default);
+  text-decoration-color: color-mix(in oklab, currentColor 45%, transparent);
+}
+
+/* ── Code tokens (lib/highlight.ts) ─────────────────────────────────────────
+   Only the semantic text tokens, which are the one part of the palette tuned
+   for contrast in BOTH themes (the plain `--color-text-info` family goes
+   near-white in dark and is unusable here). Blocks whose language the
+   tokeniser doesn't know emit no spans at all and stay body-coloured. */
+.doc-prose .doc-code .tok-comment {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+.doc-prose .doc-code .tok-string {
+  color: var(--color-text-success-muted);
+}
+.doc-prose .doc-code .tok-keyword {
+  color: var(--color-text-info-muted);
+}
+.doc-prose .doc-code .tok-number {
+  color: var(--color-text-warning-muted);
+}
+.doc-prose .doc-code .tok-key {
+  color: var(--color-text-info-muted);
+}
+.doc-prose .doc-code .tok-variable {
+  color: var(--color-text-danger-muted);
+}
+/* Highlighting is decoration; under forced colours it must get out of the way. */
+@media (forced-colors: active) {
+  .doc-prose .doc-code [class^="tok-"] {
+    color: CanvasText;
+  }
+}

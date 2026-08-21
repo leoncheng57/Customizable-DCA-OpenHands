@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="500" viewBox="0 0 880 500"
+     role="img" aria-labelledby="heroTitle heroDesc"
+     font-family="ui-sans-serif, system-ui, sans-serif">
+  <title id="heroTitle">Customizable DCA topology</title>
+  <desc id="heroDesc">The browser talks only to the Express BFF in server/. The BFF calls the
+    headless OpenHands agent-server inside the ghcr.io/openhands/agent-canvas container over HTTP
+    with an X-Session-API-Key header, and also reverse-proxies agent-started dev servers at
+    /preview/&lt;port&gt;. The container holds the workspaces under /home/openhands/workspace:
+    local/&lt;dir&gt; is a bind mount of a host folder, sessions/&lt;uuid&gt; is a docker volume used by
+    clone-by-URL conversations. Two side dependencies hang off the BFF: a Postgres database in the
+    same compose project, used only by manager runs, and the external GitHub and GitLab APIs. The
+    agent-server API key is read server-side and never reaches the browser.</desc>
+
+  <!-- ── header ───────────────────────────────────────────────────────── -->
+  <text x="24" y="32" font-size="9.5" letter-spacing="1.6" font-weight="600" fill="#8892A0">TOPOLOGY</text>
+  <text x="24" y="58" font-size="15" font-weight="500" fill="#6E7781">The browser never talks to the agent — the BFF owns every credential.</text>
+
+  <!-- ── docker compose group ─────────────────────────────────────────── -->
+  <text x="580" y="86" font-size="9.5" letter-spacing="1.4" font-weight="600" fill="#8892A0">DOCKER COMPOSE</text>
+  <rect x="580" y="96" width="276" height="376" rx="10"
+        fill="#8A93A1" fill-opacity="0.05" stroke="#949DA9" stroke-width="1" stroke-dasharray="5 4"/>
+
+  <!-- ── external group ───────────────────────────────────────────────── -->
+  <text x="24" y="374" font-size="9.5" letter-spacing="1.4" font-weight="600" fill="#8892A0">EXTERNAL</text>
+
+  <!-- ── boxes ────────────────────────────────────────────────────────── -->
+  <rect x="24" y="116" width="156" height="88" rx="8" fill="none" stroke="#8A93A1" stroke-width="1.2"/>
+  <text x="42" y="146" font-size="13" font-weight="600" fill="#6E7781">Browser</text>
+  <text x="42" y="168" font-size="10" fill="#8892A0">vite :5173 (dev)</text>
+  <text x="42" y="185" font-size="10" fill="#8892A0">served by :3000 (prod)</text>
+
+  <rect x="252" y="116" width="180" height="88" rx="8" fill="none" stroke="#8A93A1" stroke-width="1.2"/>
+  <text x="270" y="146" font-size="13" font-weight="600" fill="#6E7781">Express BFF</text>
+  <text x="270" y="167" font-size="10" fill="#8892A0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">server/</text>
+  <text x="270" y="183" font-size="9.5" fill="#8892A0">conversations · SSE · files</text>
+  <text x="270" y="196" font-size="9.5" fill="#8892A0">git · terminal audit · preview</text>
+
+  <rect x="600" y="116" width="236" height="88" rx="8" fill="none" stroke="#8A93A1" stroke-width="1.2"/>
+  <text x="618" y="144" font-size="13" font-weight="600" fill="#6E7781">agent-canvas container</text>
+  <text x="618" y="164" font-size="9.5" fill="#8892A0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">ghcr.io/openhands/agent-canvas</text>
+  <text x="618" y="180" font-size="10" fill="#8892A0">OpenHands agent-server, headless</text>
+  <text x="618" y="194" font-size="9.5" fill="#8892A0">:8000 in-container · :8010 on host (dev)</text>
+
+  <rect x="600" y="248" width="236" height="104" rx="8" fill="none" stroke="#8A93A1" stroke-width="1.2"/>
+  <text x="618" y="274" font-size="12" font-weight="600" fill="#6E7781">workspaces</text>
+  <text x="618" y="292" font-size="9.5" fill="#8892A0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">/home/openhands/workspace/</text>
+  <circle cx="622" cy="313" r="2.6" fill="#3ECF8E"/>
+  <text x="632" y="317" font-size="10" fill="#6E7781" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">local/&lt;dir&gt;</text>
+  <text x="736" y="317" font-size="9" fill="#8892A0">host bind mount</text>
+  <circle cx="622" cy="335" r="2.6" fill="#3ECF8E"/>
+  <text x="632" y="339" font-size="10" fill="#6E7781" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">sessions/&lt;uuid&gt;</text>
+  <text x="736" y="339" font-size="9" fill="#8892A0">docker volume</text>
+
+  <rect x="600" y="384" width="236" height="72" rx="8" fill="none" stroke="#949DA9" stroke-width="1.1" stroke-dasharray="5 4"/>
+  <text x="618" y="412" font-size="12" font-weight="600" fill="#6E7781">Postgres</text>
+  <text x="618" y="431" font-size="9.5" fill="#8892A0">manager runs only · :55432</text>
+
+  <rect x="24" y="384" width="236" height="72" rx="8" fill="none" stroke="#949DA9" stroke-width="1.1" stroke-dasharray="5 4"/>
+  <text x="44" y="412" font-size="12" font-weight="600" fill="#6E7781">GitHub / GitLab APIs</text>
+  <text x="44" y="431" font-size="9.5" fill="#8892A0">issues · merge requests · pipelines</text>
+
+  <!-- ── browser → BFF ────────────────────────────────────────────────── -->
+  <text x="216" y="148" font-size="10" fill="#8892A0" text-anchor="middle">HTTP · SSE</text>
+  <path d="M180,160 H243" fill="none" stroke="#8A93A1" stroke-width="1.2"/>
+  <path d="M244,156 L252,160 L244,164 Z" fill="#8A93A1"/>
+
+  <!-- ── BFF → agent-server (the credential boundary) ─────────────────── -->
+  <text x="516" y="144" font-size="10" font-weight="500" fill="#22A47B" text-anchor="middle">HTTP + X-Session-API-Key</text>
+  <path d="M432,160 H591" fill="none" stroke="#22A47B" stroke-width="1.6"/>
+  <path d="M592,155.5 L600,160 L592,164.5 Z" fill="#3ECF8E"/>
+  <text x="510" y="180" font-size="9" fill="#8892A0" text-anchor="middle">+ /preview/&lt;port&gt; reverse proxy</text>
+
+  <!-- ── agent → workspaces ───────────────────────────────────────────── -->
+  <path d="M718,204 V239" fill="none" stroke="#8A93A1" stroke-width="1.2"/>
+  <path d="M713.5,240 L722.5,240 L718,248 Z" fill="#8A93A1"/>
+
+  <!-- ── BFF → Postgres (optional) ────────────────────────────────────── -->
+  <path d="M382,204 V412 Q382,420 390,420 H591" fill="none" stroke="#949DA9" stroke-width="1.1"
+        stroke-dasharray="5 4" stroke-linecap="round"/>
+  <path d="M592,416 L600,420 L592,424 Z" fill="#949DA9"/>
+  <text x="478" y="410" font-size="9.5" fill="#8892A0" text-anchor="middle">pg pool · only when PGHOST set</text>
+
+  <!-- ── BFF → git forges (optional) ──────────────────────────────────── -->
+  <path d="M302,204 V412 Q302,420 294,420 H269" fill="none" stroke="#949DA9" stroke-width="1.1"
+        stroke-dasharray="5 4" stroke-linecap="round"/>
+  <path d="M268,416 L260,420 L268,424 Z" fill="#949DA9"/>
+  <text x="292" y="298" font-size="9.5" fill="#8892A0" text-anchor="end">PRIVATE-TOKEN</text>
+  <text x="292" y="311" font-size="9.5" fill="#8892A0" text-anchor="end">GH token</text>
+
+  <!-- ── legend ───────────────────────────────────────────────────────── -->
+  <path d="M24,487 H50" fill="none" stroke="#22A47B" stroke-width="1.6"/>
+  <text x="58" y="491" font-size="9.5" fill="#8892A0">the one hop that carries the agent-server key — read server-side, never sent to the browser</text>
+  <path d="M600,487 H626" fill="none" stroke="#949DA9" stroke-width="1.1" stroke-dasharray="5 4"/>
+  <text x="634" y="491" font-size="9.5" fill="#8892A0">optional</text>
+</svg>

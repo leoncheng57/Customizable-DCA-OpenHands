@@ -103,8 +103,11 @@ Consequences for users and contributors:
 ## Install
 
 ```bash
-curl -fsSL https://github.com/leoncheng57/Customizable-DCA-OpenHands/releases/latest/download/install.sh | bash
+OPENHANDS_APP_VERSION=0.0.1 bash -c "$(curl -fsSL https://github.com/leoncheng57/Customizable-DCA-OpenHands/releases/download/v0.0.1/install.sh)"
 ```
+
+`v0.0.1` is a pre-release, so GitHub's `releases/latest/` pointer intentionally skips it.
+Use the pinned command above until the first full release is published.
 
 What `install.sh` does, in order:
 

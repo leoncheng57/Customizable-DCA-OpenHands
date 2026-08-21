@@ -14,7 +14,20 @@ import { openHandsApi, type ConversationSummary } from "./lib/api.js";
 import { DOCS } from "./lib/docs.js";
 import { buildCommands, rankCommands, type Command } from "./lib/palette.js";
 import { CommandPalette } from "./ds/command-palette.js";
+import { DemoBanner } from "./components/DemoBanner.js";
+import { installMockBackend } from "./mock/install.js";
 import "./styles.css";
+
+// GitHub Pages build (VITE_DEMO=1): there is no BFF, so client/mock/ answers
+// every /api/openhands request instead.
+//
+// vite.config.ts substitutes this as a boolean LITERAL — assign it straight
+// through, no Boolean() wrapper, or Rollup can no longer fold the branches
+// below and the self-hosted build ships the demo backend it never uses.
+const DEMO: boolean = import.meta.env.VITE_DEMO;
+// Synchronous, before any component mounts: window.fetch has to be patched by
+// the time the first page effect fires.
+if (DEMO) installMockBackend();
 
 const LandingPage = React.lazy(() => import("./pages/Landing.js").then((m) => ({ default: m.LandingPage })));
 const HubPage = React.lazy(() => import("./pages/Hub.js").then((m) => ({ default: m.HubPage })));
@@ -205,6 +218,9 @@ function Shell({ children }: { children: React.ReactNode }) {
     // full-size and hides the composer behind the keys. Publishing it here
     // rather than per-page means every routed page inherits the correction.
     <div className="flex h-[var(--app-vvh,100dvh)] min-h-0 flex-col overflow-hidden text-[var(--color-text-default)]">
+      {/* First child, not position:fixed — the disclosure strip shares the
+          column with the nav band, so it can never overlap it. */}
+      {DEMO && <DemoBanner />}
       {/* Floating glass island nav: detached from the top edge, brand left,
           segmented icon+label items in a recessed track, toggle right. */}
       <div className="sticky top-0 z-40 shrink-0 px-3 pt-3 pb-1">

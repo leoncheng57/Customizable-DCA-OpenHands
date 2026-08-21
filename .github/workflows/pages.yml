@@ -1,0 +1,121 @@
+name: pages
+
+# Publishes the client to GitHub Pages as an interactive demo: VITE_DEMO swaps
+# the BFF for client/mock/, so the site needs no server, no container and no
+# LLM. The Contributing docs are the part that is genuinely complete — their
+# markdown is bundled into the build by client/lib/docs.ts.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never cancel a deploy in flight: a half-applied Pages upload is worse than a
+# queued one (this is the opposite of ci.yml, where cancelling is free).
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  # Project Pages live under /<repo>/. The account's user site carries the
+  # leoncheng.dev custom domain, so this repo inherits it and lands at
+  # https://leoncheng.dev/Customizable-DCA-OpenHands/ — do NOT add a CNAME
+  # file here, that would try to claim the apex for this project alone.
+  BASE_PATH: /Customizable-DCA-OpenHands/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Build demo bundle
+        run: npm run build:ui
+        env:
+          VITE_DEMO: "1"
+          VITE_BASE_PATH: ${{ env.BASE_PATH }}
+
+      - name: Prepare Pages output
+        # Three things Pages needs that Vite does not produce:
+        #
+        #  1. .nojekyll — without it Pages runs the tree through Jekyll, which
+        #     silently drops every path segment starting with an underscore.
+        #  2. 404.html — Pages has no SPA rewrite, so any unknown deep link
+        #     must serve the app shell and let the router take over. This is
+        #     the catch-all for dynamic URLs (conversation ids, run boards).
+        #  3. Prerendered directory stubs for the routes that are known at
+        #     build time. 404.html *works*, but it is served with HTTP 404 —
+        #     bad for the docs, which are the reason this site exists. A real
+        #     index.html at the route path makes /openhands/contributing and
+        #     every /openhands/contributing/<slug> answer 200 and be
+        #     indexable. Slugs are derived from the markdown files themselves;
+        #     tests/docs-registry.test.ts guarantees they match the registry
+        #     in client/lib/docs.ts, so a new doc is picked up automatically.
+        run: |
+          set -euo pipefail
+          out=dist/client
+          touch "$out/.nojekyll"
+          cp "$out/index.html" "$out/404.html"
+
+          routes=(
+            openhands
+            openhands/native
+            openhands/overview
+            openhands/runs
+            openhands/files
+            openhands/changes
+            openhands/terminal
+            openhands/manager-guide
+            openhands/notifications
+            openhands/agent-settings
+            openhands/tools
+            openhands/contributing
+          )
+          for f in CONTRIBUTING.md docs/*.md; do
+            slug=$(basename "$f" .md | tr '[:upper:]' '[:lower:]')
+            routes+=("openhands/contributing/$slug")
+          done
+
+          for route in "${routes[@]}"; do
+            mkdir -p "$out/$route"
+            cp "$out/index.html" "$out/$route/index.html"
+          done
+          echo "prerendered ${#routes[@]} routes"
+
+      - name: Verify base path rewriting
+        # A base-path regression is invisible until the site is live and blank,
+        # so fail the build here instead. Guards the %BASE_URL% substitutions
+        # in client/index.html and Vite's own asset rewriting.
+        run: |
+          set -euo pipefail
+          html=dist/client/index.html
+          grep -q 'src="${{ env.BASE_PATH }}assets/' "$html" || { echo "entry script is not under ${{ env.BASE_PATH }}"; exit 1; }
+          grep -q 'href="${{ env.BASE_PATH }}favicon.svg"' "$html" || { echo "favicon href is not base-relative"; exit 1; }
+          ! grep -qE '(src|href)="/(assets|favicon|icons|manifest)' "$html" || { echo "found a root-absolute asset URL"; exit 1; }
+          test -f dist/client/404.html
+          test -f dist/client/openhands/contributing/index.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/client
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

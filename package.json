@@ -1,6 +1,6 @@
 {
   "name": "customizable-dca-openhands",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Customizable DCA — a customizable, local-first web IDE for driving OpenHands coding agents.",
   "license": "MIT",
   "repository": {

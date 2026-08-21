@@ -126,17 +126,16 @@ Contributing, the check matrix to run before a PR, and the risk map:
 > Details: [docs/packaging.md](docs/packaging.md#known-limitations-beta).
 
 > [!NOTE]
-> **No GitHub Release has been published yet**, so the `releases/latest/download/…` URL below
-> returns 404 today. The packaged path becomes available with the first tagged release — until
-> then, the development quickstart is the only way to run the app. Watch
-> [Releases](../../releases).
+> The only release so far, [`v0.0.1`](../../releases/tag/v0.0.1), is marked **pre-release**, and
+> GitHub's `releases/latest/…` pointer skips pre-releases — so pin the version explicitly, as
+> below. The unpinned `latest` URL starts working with the first full release.
 
-Requirements: Docker only. The installer fetches the latest
+Requirements: Docker only. The installer fetches a
 [GitHub Release](../../releases) and the whole stack (app + agent) runs in docker compose
 under `~/openhands-app`:
 
 ```bash
-curl -fsSL https://github.com/leoncheng57/Customizable-DCA-OpenHands/releases/latest/download/install.sh | bash
+OPENHANDS_APP_VERSION=0.0.1 bash -c "$(curl -fsSL https://github.com/leoncheng57/Customizable-DCA-OpenHands/releases/download/v0.0.1/install.sh)"
 open http://localhost:3000
 ```
 

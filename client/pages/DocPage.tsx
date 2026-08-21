@@ -4,14 +4,24 @@
 // link to its GitHub blob. Full-document markdown (GFM tables, fenced code)
 // uses react-markdown per the guidance in ds/markdown.tsx; ```mermaid fences
 // render client-side and degrade to their source text on parse errors.
-import { useEffect, useId, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Fragment, useEffect, useId, useMemo, useRef, useState } from "react";
+import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useTheme } from "next-themes";
 import { ArrowLeft, ExternalLink, FileCode2 } from "lucide-react";
 import { Badge } from "../ds/badge.js";
-import { DOCS, docByHref, docBySlug, loadDocSource, REPO_URL, type DocMeta } from "../lib/docs.js";
+import {
+  DOCS,
+  docByHref,
+  docBySlug,
+  docRoute,
+  loadDocSource,
+  REPO_URL,
+  slugifyHeading,
+  type DocMeta,
+} from "../lib/docs.js";
+import { highlight, languageFromClassName } from "../lib/highlight.js";
 
 function MermaidBlock({ chart }: { chart: string }) {
   const { resolvedTheme } = useTheme();
@@ -45,7 +55,7 @@ function MermaidBlock({ chart }: { chart: string }) {
     // Broken diagram ≠ broken page: show the source so the doc stays useful.
     return <pre className="doc-code">{chart}</pre>;
   }
-  if (!svg) return <div className="py-6 text-center text-xs text-[var(--color-text-subtle)]">Rendering diagram…</div>;
+  if (!svg) return <div className="py-6 text-center text-xs text-[var(--color-text-muted)]">Rendering diagram…</div>;
   return (
     <div
       className="doc-mermaid my-4 flex justify-center overflow-x-auto"
@@ -70,15 +80,83 @@ function splitMermaid(md: string): { kind: "md" | "mermaid"; body: string }[] {
   return segments;
 }
 
+/** Flatten a react-markdown children tree to its text, so a heading can be
+ * slugified the way GitHub slugifies the markdown source it came from
+ * (`## The primitives (\`client/ds/\`)` → "the-primitives-clientds"). */
+function nodeText(node: React.ReactNode): string {
+  if (node === null || node === undefined || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(nodeText).join("");
+  if (typeof node === "object" && "props" in node) {
+    return nodeText((node as { props?: { children?: React.ReactNode } }).props?.children);
+  }
+  return "";
+}
+
+type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+
+/** Heading with a GitHub-compatible `id` plus the hover permalink GitHub
+ * itself renders. Without the id every `](#section)` link in the corpus is a
+ * no-op — several docs cross-reference their own sections.
+ *
+ * The permalink is `aria-hidden` + untabbable (same as GitHub's) so it stays
+ * out of the heading's accessible name; e2e specs match headings by role+name. */
+function DocHeading({ tag: Tag, children }: { tag: HeadingTag; children?: React.ReactNode }) {
+  const text = nodeText(children);
+  const id = slugifyHeading(text);
+  if (!id) return <Tag>{children}</Tag>;
+  return (
+    <Tag id={id} className="doc-heading">
+      {children}
+      <a className="doc-heading-anchor" href={`#${id}`} aria-hidden="true" tabIndex={-1}>
+        #
+      </a>
+    </Tag>
+  );
+}
+
+/** Fenced code, tokenised in-process (client/lib/highlight.ts). Unknown or
+ * deliberately-plain languages (`text`, no infostring) fall through to the
+ * raw string, so ASCII trees and program output stay uncoloured. */
+function DocCode({ className, children }: { className?: string; children?: React.ReactNode }) {
+  const lang = languageFromClassName(className);
+  const raw = nodeText(children);
+  const tokens = useMemo(() => (raw ? highlight(raw, lang) : null), [raw, lang]);
+  // Inline code (no infostring, no newline) keeps its plain rendering.
+  if (!tokens) return <code className={className}>{children}</code>;
+  return (
+    <code className={className} data-lang={lang}>
+      {tokens.map((t, i) =>
+        t.kind === "plain" ? (
+          <Fragment key={i}>{t.text}</Fragment>
+        ) : (
+          <span key={i} className={`tok-${t.kind}`}>
+            {t.text}
+          </span>
+        ),
+      )}
+    </code>
+  );
+}
+
 /** Links inside docs: registered .md targets navigate in-app; other
  * repo-relative paths point at the GitHub blob; external links open a tab. */
 function DocLink({ href, children, docPath }: { href?: string; children?: React.ReactNode; docPath: string }) {
   if (!href) return <span>{children}</span>;
-  if (href.startsWith("#")) return <a href={href}>{children}</a>;
+  if (href.startsWith("#")) {
+    return (
+      <a className="doc-link" href={href}>
+        {children}
+      </a>
+    );
+  }
   const target = docByHref(href);
   if (target) {
+    // Keep the fragment: `cicd.md#releases` should land on that section, not
+    // just the top of cicd.
+    const hash = href.includes("#") ? href.slice(href.indexOf("#")) : "";
     return (
-      <Link className="doc-link" to={`/openhands/contributing/${target.slug}`}>
+      <Link className="doc-link" to={docRoute(target.slug, hash)}>
         {children}
       </Link>
     );
@@ -111,6 +189,13 @@ function MarkdownBody({ source, docPath }: { source: string; docPath: string }) 
           </DocLink>
         ),
         pre: ({ children }) => <pre className="doc-code">{children}</pre>,
+        code: ({ className, children }) => <DocCode className={className}>{children}</DocCode>,
+        h1: ({ children }) => <DocHeading tag="h1">{children}</DocHeading>,
+        h2: ({ children }) => <DocHeading tag="h2">{children}</DocHeading>,
+        h3: ({ children }) => <DocHeading tag="h3">{children}</DocHeading>,
+        h4: ({ children }) => <DocHeading tag="h4">{children}</DocHeading>,
+        h5: ({ children }) => <DocHeading tag="h5">{children}</DocHeading>,
+        h6: ({ children }) => <DocHeading tag="h6">{children}</DocHeading>,
       }}
     >
       {source}
@@ -147,11 +232,26 @@ function SourceBanner({ meta }: { meta: DocMeta }) {
   );
 }
 
+/** Reader input that should cancel automatic re-alignment. */
+const INPUT_EVENTS = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
+
+/** Nearest scrolling ancestor. Ordinary pages scroll inside `<main>` in the
+ * app shell, not the window, so `window.scrollTo` alone is a no-op here. */
+function scroller(from: HTMLElement | null): HTMLElement | null {
+  for (let el = from?.parentElement ?? null; el; el = el.parentElement) {
+    const { overflowY } = getComputedStyle(el);
+    if (/(auto|scroll)/.test(overflowY) && el.scrollHeight > el.clientHeight) return el;
+  }
+  return null;
+}
+
 export function DocPage() {
   const { slug = "" } = useParams();
+  const { hash } = useLocation();
   const meta = docBySlug(slug);
   const [source, setSource] = useState<string | null>(null);
   const [error, setError] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!meta) return;
@@ -160,19 +260,61 @@ export function DocPage() {
     loadDocSource(meta)
       .then(setSource)
       .catch(() => setError(true));
-    window.scrollTo(0, 0);
   }, [meta]);
 
-  if (!meta) return <Navigate to="/openhands/contributing" replace />;
+  /** Land the reader in the right place once the markdown has rendered.
+   *
+   * A `#fragment` can't be left to the browser: it arrives before the doc
+   * source has been swapped in, so the heading it names does not exist yet.
+   * That covers both a pasted deep link and an in-corpus cross-doc link like
+   * `cicd.md#releases`.
+   *
+   * Aligning once isn't enough either — ```mermaid fences resolve
+   * asynchronously and can add several hundred pixels ABOVE the anchor after
+   * the first scroll, leaving the reader stranded mid-document. So re-align
+   * whenever the article resizes, until it settles, and yield the moment the
+   * reader touches the page. */
+  useEffect(() => {
+    if (source === null) return;
+    const container = scroller(rootRef.current);
+    const targetId = hash ? decodeURIComponent(hash.slice(1)) : "";
+
+    if (!targetId) {
+      // New doc, no fragment: start at the top. `window.scrollTo` alone is a
+      // no-op here — ordinary pages scroll inside <main>, not the document.
+      container?.scrollTo({ top: 0 });
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    const align = () => document.getElementById(targetId)?.scrollIntoView({ block: "start" });
+    align();
+
+    const article = rootRef.current?.querySelector<HTMLElement>('[data-testid="doc-body"]');
+    const observer = new ResizeObserver(align);
+    if (article) observer.observe(article);
+    // Any deliberate input hands control back immediately; the timeout caps
+    // the window in case a diagram never settles.
+    const release = () => {
+      observer.disconnect();
+      clearTimeout(timer);
+      for (const type of INPUT_EVENTS) window.removeEventListener(type, release);
+    };
+    const timer = setTimeout(release, 2500);
+    for (const type of INPUT_EVENTS) window.addEventListener(type, release, { passive: true });
+    return release;
+  }, [source, hash]);
+
+  if (!meta) return <Navigate to={docRoute()} replace />;
 
   const idx = DOCS.findIndex((d) => d.slug === meta.slug);
   const prev = DOCS[idx - 1];
   const next = DOCS[idx + 1];
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-8">
+    <div className="mx-auto max-w-3xl px-6 py-8" ref={rootRef}>
       <Link
-        to="/openhands/contributing"
+        to={docRoute()}
         className="mb-4 inline-flex items-center gap-1 text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-default)]"
       >
         <ArrowLeft size={13} aria-hidden /> Contributing
@@ -188,7 +330,7 @@ export function DocPage() {
         </p>
       )}
       {source === null && !error && (
-        <p className="text-sm text-[var(--color-text-subtle)]">Loading…</p>
+        <p className="text-sm text-[var(--color-text-muted)]">Loading…</p>
       )}
       {source !== null && (
         <article className="doc-prose" data-testid="doc-body">
@@ -201,17 +343,20 @@ export function DocPage() {
           )}
         </article>
       )}
-      <nav className="mt-10 flex justify-between gap-4 border-t border-[var(--color-border-default)] pt-4 text-sm">
+      <nav
+        className="mt-10 flex justify-between gap-4 border-t border-[var(--color-border-default)] pt-4 text-sm"
+        aria-label="Previous and next document"
+      >
         {prev ? (
-          <Link className="doc-link" to={`/openhands/contributing/${prev.slug}`}>
-            ← {prev.title}
+          <Link className="doc-link doc-nav-link" to={docRoute(prev.slug)} rel="prev">
+            <span aria-hidden>←</span> {prev.title}
           </Link>
         ) : (
           <span />
         )}
         {next && (
-          <Link className="doc-link text-right" to={`/openhands/contributing/${next.slug}`}>
-            {next.title} →
+          <Link className="doc-link doc-nav-link text-right" to={docRoute(next.slug)} rel="next">
+            {next.title} <span aria-hidden>→</span>
           </Link>
         )}
       </nav>

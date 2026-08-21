@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "../ds/badge.js";
 import { openHandsApi, type OpenHandsStatus } from "../lib/api.js";
+import { docRoute } from "../lib/doc-links.js";
 
 export function LandingPage() {
   const [status, setStatus] = useState<OpenHandsStatus | null>(null);
@@ -74,7 +75,7 @@ export function LandingPage() {
       <div className="max-w-3xl rounded-lg border border-[var(--color-border-default)] p-4 text-sm">
         <div className="mb-2 font-medium">Read more</div>
         <ul className="list-disc space-y-1 pl-5 text-[var(--color-text-muted)]">
-          <li><Link className="underline" to="/openhands/contributing">Contributing</Link> — architecture, docs, risk map, and how to extend or fork this app.</li>
+          <li><Link className="underline" to={docRoute()}>Contributing</Link> — architecture, docs, risk map, and how to extend or fork this app.</li>
           <li><Link className="underline" to="/openhands/notifications">Notifications</Link> — ntfy push, desktop notifications, and a browser chime on finish / error / stuck / awaiting input.</li>
           <li><Link className="underline" to="/openhands/manager-guide">Manager runs</Link> — parallel worker orchestration guide.</li>
         </ul>

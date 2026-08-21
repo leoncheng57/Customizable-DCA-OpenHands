@@ -9,6 +9,12 @@
 
 export const REPO_URL = "https://github.com/leoncheng57/Customizable-DCA-OpenHands";
 
+// Route prefix + heading-anchor slugs live in lib/doc-links.ts (no imports, so
+// bundle-cheap consumers like lib/palette.ts can use them without dragging the
+// eager markdown glob below into the main chunk). Re-exported here so doc-page
+// call sites need only one import.
+export { DOCS_BASE, docRoute, slugifyHeading } from "./doc-links.js";
+
 export type DocCategory = "start" | "architecture" | "guides" | "history";
 
 /** Maturity of the *feature* a doc describes, not of the prose. "beta" means

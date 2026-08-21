@@ -239,7 +239,14 @@ export function PreviewPanel({ conversationId }: { conversationId: string }) {
     try {
       await openHandsApi.previewSetTarget(conversationId, manualPort);
       setSrc(previewUrl(conversationId));
-    } catch {
+    } catch (err: unknown) {
+      if (import.meta.env.VITE_DEMO) {
+        // Static demo hosting has no reverse proxy. Keep the honest mock error
+        // visible instead of mounting an iframe that can only navigate to 404.
+        setActionError(err instanceof Error ? err.message : "Preview is unavailable in the simulation");
+        setSrc(null);
+        return;
+      }
       // Registration failed (e.g. pod unreachable) — fall back to the legacy
       // direct :port proxy URL so the manual path still works.
       setSrc(previewUrl(conversationId, manualPort));
